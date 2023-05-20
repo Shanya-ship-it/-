@@ -1,0 +1,14 @@
+// Скопировать и переименовать db.config.js
+
+// Файл с локальными настройками подключения к базе
+
+/**@type {import("pg").PoolConfig} */
+const cfg = {
+  user: "postgres",
+  password: "postgres",
+  host: "localhost",
+  port: 5432,
+  database: "conn",
+};
+
+module.exports = cfg;
