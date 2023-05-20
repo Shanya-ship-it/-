@@ -70,6 +70,10 @@ async function main() {
     },
   ];
 
+  app.get("/test", (req, res) => {
+    res.json(users);
+  });
+
   // route login
   app.post("/login", (req: Request, res: Response) => {
     const { email, password }: FormInputs = req.body;
