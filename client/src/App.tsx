@@ -8,13 +8,19 @@ import { getData } from "./utils/data-util"; //импорт обработки �
 import FormInput from "./components/form-input/form-input"; //импорт компонентов, которая форма-инпут
 
 import "./App.css"; //импорт цсс для красоты
+import { isErrored } from "stream";
 
 // TypeScript declarations
 interface User {
+  //определение типов
   id: number;
   name: string;
+  surname: string;
+  adress: string;
+  phonenubmer: number;
   email: string;
-  password: string;
+  company: string;
+  contract: number;
 }
 
 const App = () => {
@@ -34,14 +40,48 @@ const App = () => {
     setJsonData(json);
   };
 
+  const sendRequest2 = async () => {
+    // Делаем запрос до бэка
+    const res = await fetch("http://localhost:8080/test2", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+    });
+    // Парсим полученный JSON
+    const json: User[] = await res.json();
+    // Обновляем state
+    setJsonData(json);
+  };
+
   return (
     <div className="App-header">
+      <h1>АСУКСТ</h1>
       <button onClick={sendRequest}>Send request</button>
+      <button onClick={sendRequest2}>Send request2</button>
       {/* Превращаем данные в DOM элементы, по div'у на User'а*/}
       {jsonData.map((user) => (
         <div key={user.id}>
-          <h3>{user.name}</h3>
-          ASFGKHJbsdgjkbnrsg
+          <thead>
+            <tr>
+              <td>Name</td>
+              <td>Surname</td>
+              <td>Adress</td>
+              <td>Phonenumber</td>
+              <td>Email</td>
+              <td>Company</td>
+              <td>Contract</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr key={user.id}>
+              <td>{user.name}</td>
+              <td>{user.surname}</td>
+              <td>{user.adress}</td>
+              <td>{user.phonenubmer}</td>
+              <td>{user.email}</td>
+              <td>{user.company}</td>
+              <td>{user.email}</td>
+            </tr>
+          </tbody>
         </div>
       ))}
     </div>

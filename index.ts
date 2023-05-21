@@ -79,7 +79,7 @@ async function main() {
   //попробуем отправить юзеров из бд постом
   app.post("/test2", async (req, res) => {
     {
-      const z1 = await pool.query(`SELECT * FROM users`);
+      const z1 = await pool.query(`SELECT * FROM `);
       res.json(z1.rows);
     }
   });
