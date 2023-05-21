@@ -6,6 +6,7 @@ import express, { Express, Request, Response } from "express";
 import path from "path";
 import cors from "cors";
 import { pool, initDb } from "./db";
+import e from "express";
 
 async function main() {
   console.log("Hello! Server starting uwu");
@@ -79,8 +80,39 @@ async function main() {
   //попробуем отправить юзеров из бд постом
   app.post("/test2", async (req, res) => {
     {
-      const z1 = await pool.query(`SELECT * FROM `);
+      const z1 = await pool.query(`SELECT * FROM clients`);
       res.json(z1.rows);
+    }
+  });
+
+  app.post("/test3", async (req, res) => {
+    {
+      const { name, surname, adress, phonenumber, email, company, contract } = req.body;
+      const newPerson = await pool.query(
+        "INSERT INTO  clients (name, surname, adress, phonenumber, email, company, contract) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+        [name, surname, adress, phonenumber, email, company, contract]
+      );
+      res.json(newPerson.rows);
+    }
+  });
+
+  app.post("/test4", async (req, res) => {
+    {
+      const { id, name, adress } = req.body;
+      const zapros = await pool.query("UPDATE clients set name = $1, adress = $2 where id = $3 RETURNING *", [
+        name,
+        adress,
+        id,
+      ]);
+      res.json(zapros);
+    }
+  });
+
+  app.post("/test5", async (req, res) => {
+    {
+      const { id } = req.body;
+      const zapros = await pool.query("DELETE FROM tablet where id = $1", [id]);
+      res.json(zapros.rows);
     }
   });
 
