@@ -19,3 +19,5 @@ VALUES
   ('3568ef37-1d9a-4cb2-abee-7d92e32451e4', 'Вероника', 'Сорокина', 'ул. Грибоедова 253', '456789123', 'veron@mail.ru',  'veronCO',  004),
   ('ce5636f3-c29e-4ad7-999c-068ec2fc923f', 'Ярослав',  'Шишкин',   'ул. Восстания 2',    '567891234', 'yarod@mail.ru',  'sofiaCO',  005)
 ON CONFLICT (id) DO NOTHING;
+
+--= ඞ =--
