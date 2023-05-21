@@ -32,14 +32,14 @@ async function main() {
   app.use(cors());
 
   //запрос в постгресгл
-  app.get("/", async (req, res) => {
+  /*app.get("/", async (req, res) => {
     try {
       const z1 = await pool.query(`SELECT * FROM users`);
       res.json(z1.rows);
     } catch (err) {
       console.error(err + " ошибка");
     }
-  });
+  });*/
 
   app.get("/", (req: Request, res: Response) => {
     res.send("Hello World From the Typescript Server!");
@@ -56,6 +56,7 @@ async function main() {
 
   // Array of example users for testing purposes
   const users = [
+    //массив юзеров
     {
       id: 1,
       name: "Maria Doe",
@@ -71,7 +72,16 @@ async function main() {
   ];
 
   app.get("/test", (req, res) => {
+    //отправляю массив юзеров на сайт
     res.json(users);
+  });
+
+  //попробуем отправить юзеров из бд постом
+  app.post("/test2", async (req, res) => {
+    {
+      const z1 = await pool.query(`SELECT * FROM users`);
+      res.json(z1.rows);
+    }
   });
 
   // route login
