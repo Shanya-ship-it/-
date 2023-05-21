@@ -85,6 +85,15 @@ async function main() {
 
   app.post("/test3", async (req, res) => {
     const { name, surname, adress, phonenumber, email, company, contract } = req.body;
+
+    // const name = req.body.name;
+    // const surname = req.body.surname;
+    // const adress = req.body.adress;
+    // const phonenumber = req.body.phonenumber;
+    // const email = req.body.email;
+    // const company = req.body.company;
+    // const contract = req.body.contract;
+
     const newPerson = await pool.query(
       "INSERT INTO  clients (name, surname, adress, phonenumber, email, company, contract) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [name, surname, adress, phonenumber, email, company, contract]
