@@ -3,10 +3,8 @@
 
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
-import path from "path";
 import cors from "cors";
-import { pool, initDb } from "./db";
-import e from "express";
+import { pool, initDb, query } from "./db";
 
 async function main() {
   console.log("Hello! Server starting uwu");
@@ -72,48 +70,32 @@ async function main() {
     },
   ];
 
-  app.get("/test", (req, res) => {
-    //отправляю массив юзеров на сайт
-    res.json(users);
-  });
-
   //попробуем отправить юзеров из бд постом
-  app.post("/test2", async (req, res) => {
+  app.get("/client", async (req, res) => {
     const z1 = await pool.query(`SELECT * FROM clients`);
     res.json(z1.rows);
   });
 
-  app.post("/test3", async (req, res) => {
+  app.post("/client", async (req, res) => {
     const { name, surname, adress, phonenumber, email, company, contract } = req.body;
 
-    // const name = req.body.name;
-    // const surname = req.body.surname;
-    // const adress = req.body.adress;
-    // const phonenumber = req.body.phonenumber;
-    // const email = req.body.email;
-    // const company = req.body.company;
-    // const contract = req.body.contract;
-
-    const newPerson = await pool.query(
-      "INSERT INTO  clients (name, surname, adress, phonenumber, email, company, contract) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [name, surname, adress, phonenumber, email, company, contract]
-    );
+    const newPerson = await query`
+      INSERT INTO clients (name, surname, adress, phonenumber, email, company, contract)
+        values (${name}, ${surname}, ${adress}, ${phonenumber}, ${email}, ${company}, ${contract})
+      RETURNING *`;
     res.json(newPerson.rows);
   });
 
   app.post("/test4", async (req, res) => {
     const { id, name, adress } = req.body;
-    const zapros = await pool.query("UPDATE clients set name = $1, adress = $2 where id = $3 RETURNING *", [
-      name,
-      adress,
-      id,
-    ]);
+    const zapros =
+      await query`UPDATE clients set name = ${name}, adress = ${adress} where id = ${id} RETURNING *`;
     res.json(zapros);
   });
 
   app.post("/test5", async (req, res) => {
     const { id } = req.body;
-    const zapros = await pool.query("DELETE FROM tablet where id = $1", [id]);
+    const zapros = await query`DELETE FROM tablet where id = ${id}`;
     res.json(zapros.rows);
   });
 

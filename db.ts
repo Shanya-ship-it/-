@@ -12,3 +12,10 @@ export async function initDb() {
   await pool.query(initQuery);
   console.log("Db init success! :)");
 }
+
+export async function query(template: TemplateStringsArray, ...args: any[]) {
+  return pool.query(
+    template.map((str, i) => (i < template.length - 1 ? `${str}$${i + 1}` : str)).join(),
+    args
+  );
+}

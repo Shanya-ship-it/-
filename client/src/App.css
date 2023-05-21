@@ -13,19 +13,59 @@
   }
 }
 
-.App-header {
+.app-main {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: LEFT;
-  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
+.app-main input {
+  font-size: calc(10px + 2vmin);
+  background-color: #181c24;
+  color: white;
+}
+
+.app-main input[type="submit"] {
+  padding: 4px 8px;
+  background-color: #181c24;
+  color: white;
+  border-radius: 10px;
+  margin: 8px;
+}
+
+.app-tab {
+  flex: 1;
+  padding: 0 16px;
+}
+
 .App-link {
   color: #61dafb;
+}
+
+.app-links {
+  background-color: #383c44;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  box-shadow: 4px 0 2px black;
+  padding: 8px 0;
+}
+
+.app-links > a {
+  text-decoration: none;
+  color: white;
+  margin: 0 1em;
+}
+
+.app-links > a:hover {
+  text-decoration: none;
+  color: darkgrey;
 }
 
 @keyframes App-logo-spin {
@@ -35,4 +75,26 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.client-list {
+  border-collapse: collapse;
+}
+
+.client-list-head {
+  background-color: #383c44;
+}
+
+.client-list-item {
+  padding: 4px 8px;
+  border: 2px solid white;
+}
+
+button {
+  padding: 4px 8px;
+  background-color: #181c24;
+  color: white;
+  font-size: calc(10px + 2vmin);
+  border-radius: 10px;
+  margin: 8px;
 }
