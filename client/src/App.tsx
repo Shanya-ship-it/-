@@ -61,6 +61,7 @@ const App = () => {
     const res = await fetch("http://localhost:8080/test3", {
       method: "POST",
       headers: { "Content-type": "application/json" },
+      body: JSON.stringify({}),
     });
     // Парсим полученный JSON
     const json: User[] = await res.json();
