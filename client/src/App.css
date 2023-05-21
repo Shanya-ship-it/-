@@ -24,6 +24,28 @@
   color: white;
 }
 
+.Head1 {
+  background-color: #282c34;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: top;
+  justify-content: top;
+  font-size: calc(50px);
+  color: white;
+}
+
+.Butt {
+  background-color: #282c34;
+  min-height: 10vh;
+  max-width: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: LEFT;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: rgb(143, 192, 231);
+}
 .App-link {
   color: #61dafb;
 }

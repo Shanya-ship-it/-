@@ -80,12 +80,34 @@ const App = () => {
     setJsonData(json);
   };
 
+  const Home = () => <h2>Главная</h2>;
+
   return (
     <div className="App-header">
-      <h1>АСУКСТ</h1>
-      <button onClick={sendRequest}>Send request</button>
-      <button onClick={sendRequest2}>Send request2</button>
-      <button onClick={sendRequest3}>Send request3</button>
+      <h1 className="Head1">Автоматизированная система учета клиентов строительной компании</h1>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <BrowserRouter>
+          <Route path="/">
+            <Link to="/">Главная</Link>
+            <Home />
+          </Route>
+        </BrowserRouter>
+        <button className="Butt" onClick={sendRequest}>
+          Список клиентов
+        </button>
+        <button className="Butt" onClick={sendRequest2}>
+          Список клиентов 2
+        </button>
+        <button className="Butt" onClick={sendRequest3}>
+          Добавить нового клиента
+        </button>
+        <button className="Butt" onClick={sendRequest}>
+          Изменить запись в таблице
+        </button>
+        <button className="Butt" onClick={sendRequest}>
+          Удалить клиента из таблицы
+        </button>
+      </div>
       <form onSubmit={sendRequest3}>
         <label>
           Name:
