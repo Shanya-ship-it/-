@@ -27,6 +27,17 @@ interface User {
   contract: number;
 }
 
+const us: User = {
+  id: 6,
+  name: "fesmifes",
+  surname: "gesgse",
+  adress: "esefesfes",
+  phonenumber: 478965,
+  email: "Esesgesg",
+  company: "Esfefae",
+  contract: 6,
+};
+
 const App = () => {
   // Данные, полученные из бэка
   const [jsonData, setJsonData] = useState<User[]>([]);
@@ -61,7 +72,7 @@ const App = () => {
     const res = await fetch("http://localhost:8080/test3", {
       method: "POST",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ us }),
     });
     // Парсим полученный JSON
     const json: User[] = await res.json();
@@ -75,6 +86,37 @@ const App = () => {
       <button onClick={sendRequest}>Send request</button>
       <button onClick={sendRequest2}>Send request2</button>
       <button onClick={sendRequest3}>Send request3</button>
+      <form onSubmit={sendRequest3}>
+        <label>
+          Name:
+          <input type="text" name="name" />
+        </label>
+        <label>
+          Surname:
+          <input type="text" name="surname" />
+        </label>
+        <label>
+          Adress:
+          <input type="text" name="adress" />
+        </label>
+        <label>
+          Phonenumber:
+          <input type="text" name="phonenumber" />
+        </label>
+        <label>
+          email:
+          <input type="text" name="email" />
+        </label>
+        <label>
+          Company:
+          <input type="text" name="company" />
+        </label>
+        <label>
+          Contract:
+          <input type="text" name="contract" />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
 
       {/* Превращаем данные в DOM элементы, по div'у на User'а*/}
       <table>
