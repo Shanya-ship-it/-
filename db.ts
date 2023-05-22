@@ -15,7 +15,7 @@ export async function initDb() {
 
 export async function query(template: TemplateStringsArray, ...args: any[]) {
   return pool.query(
-    template.map((str, i) => (i < template.length - 1 ? `${str}$${i + 1}` : str)).join(),
+    template.map((str, i) => (i < template.length - 1 ? `${str}$${i + 1}` : str)).join(""),
     args
   );
 }
