@@ -1,3 +1,4 @@
+//файл для типизации объектов? данных?
 export interface Client {
   //определение типов
   id: number;
@@ -11,7 +12,7 @@ export interface Client {
 }
 
 /** Свойства клиента для отрисовки */
-export type ClientProperties = Omit<Client, "id">;
+export type ClientProperties = Omit<Client, "id">; //омит ("пропускать") - выбирает все свойства кроме того что мы написали внутри омита, в данном случае айди
 
 /** Свойства для полей ввода */
 interface FieldMetadata {
@@ -31,4 +32,4 @@ export const clientFieldMetadata: Record<keyof ClientProperties, FieldMetadata> 
 };
 
 /** Список полей */
-export const clientPropertyList: (keyof ClientProperties)[] = Object.keys(clientFieldMetadata) as any;
+export const clientPropertyList: (keyof ClientProperties)[] = Object.keys(clientFieldMetadata) as any; //as any?

@@ -20,4 +20,18 @@ VALUES
   ('ce5636f3-c29e-4ad7-999c-068ec2fc923f', 'Ярослав',  'Шишкин',   'ул. Восстания 2',    '567891234', 'yarod@mail.ru',  'sofiaCO',  005)
 ON CONFLICT (id) DO NOTHING;
 
+
+
+CREATE TABLE IF NOT EXISTS contracts 
+(
+	id UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
+	contract INTEGER,
+	clientName CHAR(100),
+	company CHAR(100)
+);
+INSERT INTO contracts (id, contract, clientName, company) VALUES 
+('e96daf39-be5a-453d-ba46-310cce1d9303', 1, 'София	Матвеева', 'sofiaCO' ),
+('4de09c55-b928-4b11-aedb-16ee06816467', 2, 'Виктория	Пирогова', 'vikaCO' ),
+('c7b2c825-3b85-4b58-a6ba-6d11c0b1b33d', 3, 'Кирилл	Иванов', 'kirillCO' )
+ON CONFLICT (id) DO NOTHING;
 --= ඞ =--
