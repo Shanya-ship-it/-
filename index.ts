@@ -37,13 +37,30 @@ async function main() {
 
   //ниже запросы к бд
   app.get("/client", async (req, res) => {
-    const z1 = await pool.query(`SELECT * FROM clients`);
+    const z1 = await pool.query(`
+      SELECT id "id"
+        ,name "name"
+        ,surname "surname"
+        ,adress "adress"
+        ,phoneNumber "phoneNumber"
+        ,email "email"
+        ,company "company"
+      FROM clients
+    `);
     res.json(z1.rows); //в ответку передаем данные таблицы рядом, в формате жсон
   }); //достать всю таблицу клиентов
 
   //contracts
   app.get("/contracts", async (req, res) => {
-    const z1 = await pool.query(`SELECT * FROM contracts`);
+    const z1 = await pool.query(`
+      SELECT id "id"
+        ,clientId "clientId"
+        ,contract "contract"
+        ,dateBegin "dateBegin"
+        ,dateEnd "dateEnd"
+        ,price "price"
+      FROM contracts
+    `);
     res.json(z1.rows);
   });
 
@@ -53,7 +70,6 @@ async function main() {
       INSERT INTO clients (name, surname, adress, phonenumber, email, company, contract)
         VALUES (${name}, ${surname}, ${adress}, ${phonenumber}, ${email}, ${company}, ${contract})
       RETURNING *`;
-
     res.json(newPerson.rows);
   });
 

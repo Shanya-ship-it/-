@@ -1,30 +1,29 @@
-//файл для типизации объектов? данных?
+// Файл для типизации данных
+/** Клиент */
 export interface Client {
-  //определение типов
-  id: number;
+  id: string;
   name: string;
   surname: string;
   adress: string;
-  phonenumber: string;
+  phoneNumber: string;
   email: string;
   company: string;
 }
 
 //теперь делаю тоже самое только для контрактов
 export interface Contract {
-  //определение типов
-  id: number;
-  //idCl: number; ??
+  id: string;
+  clientId: string;
   contract: number;
-  datebegin: Date;
-  dtend: number;
+  dateBegin: Date;
+  dateEnd: number;
   price: number;
 }
 
 /** Свойства клиента для отрисовки */
 export type ClientProperties = Omit<Client, "id">; //омит ("пропускать") - выбирает все свойства кроме того что мы написали внутри омита, в данном случае айди
 
-export type ContractProperties = Omit<Contract, "id">;
+export type ContractProperties = Omit<Contract, "id" | "clientId">;
 /** Свойства для полей ввода */
 interface FieldMetadata {
   label: string;
@@ -38,16 +37,18 @@ export const clientFieldMetadata: Record<keyof ClientProperties, FieldMetadata> 
   adress: { label: "Adress", type: "text" },
   company: { label: "Company", type: "text" },
   email: { label: "Email", type: "text" },
-  phonenumber: { label: "Phone Number", type: "string" },
+  phoneNumber: { label: "Phone Number", type: "string" },
 };
 
 export const contractFieldMetadata: Record<keyof ContractProperties, FieldMetadata> = {
   contract: { label: "Contract", type: "string" },
-  datebegin: { label: "Data start", type: "date" },
-  dtend: { label: "Data end", type: "number" },
+  dateBegin: { label: "Data start", type: "date" },
+  dateEnd: { label: "Data end", type: "date" },
   price: { label: "Price", type: "number" },
 };
 
-/** Список полей */
-export const clientPropertyList: (keyof ClientProperties)[] = Object.keys(clientFieldMetadata) as any; //as any?
+// тайпскрипт глупый, не догадывается, что список ключей это список ключей, поэтому тип надо затереть неправильный тип через as any
+/** Список полей клиента */
+export const clientPropertyList: (keyof ClientProperties)[] = Object.keys(clientFieldMetadata) as any;
+/** Список полей контракта */
 export const contractPropertyList: (keyof ContractProperties)[] = Object.keys(contractFieldMetadata) as any;
