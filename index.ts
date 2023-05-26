@@ -55,7 +55,7 @@ async function main() {
     const z1 = await pool.query(`
       SELECT id "id"
         ,clientId "clientId"
-        ,contract "contract"
+        ,contractNumber "contractNumber"
         ,dateBegin "dateBegin"
         ,dateEnd "dateEnd"
         ,price "price"

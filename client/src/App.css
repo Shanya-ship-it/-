@@ -81,16 +81,20 @@
 }
 
 .list {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid white;
 }
 
 .list-head {
   background-color: #383c44;
+  position: sticky;
+  top: 0;
 }
 
 .list-item {
   padding: 4px 8px;
-  border: 2px solid white;
+  border: 1px solid white;
 }
 
 button {

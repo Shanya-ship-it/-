@@ -14,7 +14,7 @@ export interface Client {
 export interface Contract {
   id: string;
   clientId: string;
-  contract: number;
+  contractNumber: number;
   dateBegin: Date;
   dateEnd: number;
   price: number;
@@ -28,23 +28,32 @@ export type ContractProperties = Omit<Contract, "id" | "clientId">;
 interface FieldMetadata {
   label: string;
   type: React.InputHTMLAttributes<HTMLInputElement>["type"];
+  format?: (value: any) => string;
 }
 
 /** Словарь свойств полей ввода */
 export const clientFieldMetadata: Record<keyof ClientProperties, FieldMetadata> = {
-  name: { label: "Name", type: "text" },
-  surname: { label: "Surname", type: "text" },
-  adress: { label: "Adress", type: "text" },
-  company: { label: "Company", type: "text" },
+  name: { label: "Имя", type: "text" },
+  surname: { label: "Фамилия", type: "text" },
+  adress: { label: "Адрес", type: "text" },
+  company: { label: "Компания", type: "text" },
   email: { label: "Email", type: "text" },
-  phoneNumber: { label: "Phone Number", type: "string" },
+  phoneNumber: { label: "Номер телефона", type: "string" },
 };
 
+const dateFormat = (date: string) => new Date(date).toLocaleDateString("ru-RU");
+const moneyFormat = (money: string) =>
+  parseInt(money).toLocaleString("ru-RU", { style: "currency", currency: "rub" });
+
 export const contractFieldMetadata: Record<keyof ContractProperties, FieldMetadata> = {
-  contract: { label: "Contract", type: "string" },
-  dateBegin: { label: "Data start", type: "date" },
-  dateEnd: { label: "Data end", type: "date" },
-  price: { label: "Price", type: "number" },
+  contractNumber: { label: "Номер контракта", type: "string" },
+  dateBegin: { label: "Дата начала", type: "date", format: dateFormat },
+  dateEnd: { label: "Дата завершения", type: "date", format: dateFormat },
+  price: {
+    label: "Сумма",
+    type: "number",
+    format: moneyFormat,
+  },
 };
 
 // тайпскрипт глупый, не догадывается, что список ключей это список ключей, поэтому тип надо затереть неправильный тип через as any
