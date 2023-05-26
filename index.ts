@@ -5,7 +5,7 @@
 
 import dotenv from "dotenv"; //неуверена что это мне нужно
 import express, { Express, Request, Response } from "express";
-
+import cors from "cors";
 import { pool, initDb, query } from "./db"; //импорт бд
 
 async function main() {
@@ -26,7 +26,7 @@ async function main() {
   //Встроенный посредник, разбирающий входящие запросы в объект в формате JSON. основан на body-parser.
   //переводит данные в формат жсон
   app.use(express.json());
-
+  app.use(cors());
   app.get("/", (req: Request, res: Response) => {
     res.send("Hello World From the Typescript Server!");
   });
@@ -42,7 +42,7 @@ async function main() {
   }); //достать всю таблицу клиентов
 
   //contracts
-  app.get("/client", async (req, res) => {
+  app.get("/contracts", async (req, res) => {
     const z1 = await pool.query(`SELECT * FROM contracts`);
     res.json(z1.rows);
   });

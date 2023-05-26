@@ -5,6 +5,7 @@ import { Route, Routes, BrowserRouter, Link } from "react-router-dom"; //имп�
 import "./App.css"; //импорт цсс для красоты
 import { ClientList } from "./FetchTests/ClientList"; //импорт файла с логикой выполнения запроса для таблицы с клиентами
 import { AddClient } from "./FetchTests/AddClient"; //
+import { ContractList } from "./FetchTests/Contract";
 
 //link - привязка урл и пас и описание
 //route path - путь урл, элемент - привязка объекта к урл
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/" element={"Hello, World!"} />
           <Route path="/clients" element={<ClientList />} />
           <Route path="/add" element={<AddClient />} />
+          <Route path="/contracts" element={<ContractList />} />
         </Routes>
       </BrowserRouter>
     </div>

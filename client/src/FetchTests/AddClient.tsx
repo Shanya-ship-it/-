@@ -8,10 +8,9 @@ export const AddClient = () => {
     name: "",
     surname: "",
     adress: "",
-    company: "",
-    contract: 0,
     email: "",
     phonenumber: "",
+    company: "",
   }); //деструктуриация данных? начальное состояние
 
   const [id, setId] = useState<string | null>(null);

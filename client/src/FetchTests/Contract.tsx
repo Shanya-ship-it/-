@@ -1,55 +1,55 @@
 //файл описания списка клиента, логика извлечения данных, запрос на сервер и вывод результата
 
 import { useEffect, useState } from "react"; //хуки
-import { Client, clientFieldMetadata, clientPropertyList } from "./Types";
+import { Contract, contractFieldMetadata, contractPropertyList } from "./Types";
 
 /** Компонент для отрисовки списка  */
-export const ClientList = () => {
+export const ContractList = () => {
   // Данные, полученные из бэка
 
   //определеяем две переменные [объект, функция] = в клайнтс передается массив Клиентов,
-  const [clients, setClients] = useState<Client[]>([]); //деструктуризация данных
+  const [contracts, setContracts] = useState<Contract[]>([]); //деструктуризация данных
 
-  const getClients = async () => {
+  const getContract = async () => {
     // Делаем запрос до бэка, фетч для обращения к ресурсам по сети, фетч("источник", объект конфигурации)
-    const res = await fetch("http://localhost:8080/client", {
+    const res = await fetch("http://localhost:8080/contracts", {
       //(урл, дополнительные настройки)
       method: "GET",
       headers: { "Content-type": "application/json" },
     });
     // Парсим полученный JSON
-    const json: Client[] = await res.json();
+    const json: Contract[] = await res.json();
     // Обновляем state
-    setClients(json); //?
+    setContracts(json); //
   };
 
   // Загружаем список клиентов на первое открытие страницы (для визуализации объекта)
   useEffect(() => {
-    getClients();
+    getContract();
   }, []);
 
   //здесь происходит красивое отображение моей таблицы
   return (
     <div className="app-tab">
       <h1>Автоматизированная система учета клиентов строительной компании</h1>
-      <button onClick={getClients}>Обновить список клиентов</button>
+      <button onClick={getContract}>Обновить список контрактов</button>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
-      <table className="client-list">
-        <thead className="client-list-head">
-          <tr className="client-list-row">
-            {clientPropertyList.map((field) => (
-              <td className="client-list-item" key={field}>
-                {clientFieldMetadata[field].label}
+      <table className="contract-list">
+        <thead className="contract-list-head">
+          <tr className="contract-list-row">
+            {contractPropertyList.map((field) => (
+              <td className="contract-list-item" key={field}>
+                {contractFieldMetadata[field].label}
               </td>
             ))}
           </tr>
         </thead>
-        <tbody className="client-list-body">
-          {clients.map((user) => (
-            <tr key={user.id} className="client-list-row">
-              {clientPropertyList.map((field) => (
-                <td className="client-list-item" key={field}>
-                  {user[field]}
+        <tbody className="contract-list-body">
+          {contracts.map((user) => (
+            <tr key={user.id} className="contract-list-row">
+              {contractPropertyList.map((field) => (
+                <td className="contracts-list-item" key={field}>
+                  {user[field].toString()}
                 </td>
               ))}
             </tr>
