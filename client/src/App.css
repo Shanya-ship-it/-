@@ -40,8 +40,10 @@
 }
 
 .app-tab {
-  flex: 1;
+  flex: 1 1 1px;
   padding: 0 16px;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .App-link {
@@ -53,8 +55,9 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  box-shadow: 4px 0 2px black;
+  box-shadow: 0px 5px 5px #0005;
   padding: 8px 0;
+  z-index: 10;
 }
 
 .app-links > a {
@@ -77,15 +80,15 @@
   }
 }
 
-.client-list {
+.list {
   border-collapse: collapse;
 }
 
-.client-list-head {
+.list-head {
   background-color: #383c44;
 }
 
-.client-list-item {
+.list-item {
   padding: 4px 8px;
   border: 2px solid white;
 }
@@ -97,4 +100,9 @@ button {
   font-size: calc(10px + 2vmin);
   border-radius: 10px;
   margin: 8px;
+}
+
+.cool-header {
+  padding-left: 8px;
+  margin: 16px;
 }

@@ -31,24 +31,23 @@ export const ContractList = () => {
   //здесь происходит красивое отображение моей таблицы
   return (
     <div className="app-tab">
-      <h1>Автоматизированная система учета клиентов строительной компании</h1>
       <button onClick={getContract}>Обновить список контрактов</button>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
-      <table className="contract-list">
-        <thead className="contract-list-head">
-          <tr className="contract-list-row">
+      <table className="list">
+        <thead className="list-head">
+          <tr className="list-row">
             {contractPropertyList.map((field) => (
-              <td className="contract-list-item" key={field}>
+              <td className="list-item" key={field}>
                 {contractFieldMetadata[field].label}
               </td>
             ))}
           </tr>
         </thead>
-        <tbody className="contract-list-body">
+        <tbody className="list-body">
           {contracts.map((user) => (
-            <tr key={user.id} className="contract-list-row">
+            <tr key={user.id} className="list-row">
               {contractPropertyList.map((field) => (
-                <td className="contracts-list-item" key={field}>
+                <td className="list-item" key={field}>
                   {user[field].toString()}
                 </td>
               ))}

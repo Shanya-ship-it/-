@@ -2,16 +2,18 @@
 import React, { useState } from "react";
 import { ClientProperties, clientPropertyList, clientFieldMetadata } from "./Types";
 
+const initialClientValues: ClientProperties = {
+  name: "",
+  surname: "",
+  adress: "",
+  email: "",
+  phoneNumber: "",
+  company: "",
+};
+
 export const AddClient = () => {
   // Введенные данные клиента
-  const [user, setUser] = useState<ClientProperties>({
-    name: "",
-    surname: "",
-    adress: "",
-    email: "",
-    phonenumber: "",
-    company: "",
-  }); //деструктуриация данных? начальное состояние
+  const [client, setClient] = useState<ClientProperties>(initialClientValues); // начальное состояние
 
   const [id, setId] = useState<string | null>(null);
 
@@ -20,7 +22,7 @@ export const AddClient = () => {
     await fetch("http://localhost:8080/client", {
       method: "POST",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify(user), //джсон стринггифай переводит данные в жсон формат
+      body: JSON.stringify(client), //джсон стринггифай переводит данные в жсон формат
     });
   };
 
@@ -28,7 +30,7 @@ export const AddClient = () => {
     await fetch("http://localhost:8080/client", {
       method: "POST",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify(user),
+      body: JSON.stringify(client),
     });
   };
 
@@ -47,9 +49,9 @@ export const AddClient = () => {
                   type={type}
                   name={field}
                   // Передаем в поле ввода текущее значение
-                  value={user[field]}
+                  value={client[field]}
                   // Подписываемся на изменение значения поля, При изменении значения поля ввода вызывается функция setUser, которая обновляет объект user, заменяя значение под ключом, соответствующим значению переменной field, на новое значение, полученное из события onChange
-                  onChange={(ev) => setUser({ ...user, [field]: ev.currentTarget.value })}
+                  onChange={(ev) => setClient({ ...client, [field]: ev.currentTarget.value })}
                 />
               </td>
             </tr>
