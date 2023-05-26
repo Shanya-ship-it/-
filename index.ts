@@ -65,10 +65,10 @@ async function main() {
   });
 
   app.post("/client", async (req, res) => {
-    const { name, surname, adress, phonenumber, email, company, contract } = req.body;
+    const { name, surname, adress, phonenumber, email, company } = req.body;
     const newPerson = await query`
-      INSERT INTO clients (name, surname, adress, phonenumber, email, company, contract)
-        VALUES (${name}, ${surname}, ${adress}, ${phonenumber}, ${email}, ${company}, ${contract})
+      INSERT INTO clients (name, surname, adress, phonenumber, email, company)
+        VALUES (${name}, ${surname}, ${adress}, ${phonenumber}, ${email}, ${company})
       RETURNING *`;
     res.json(newPerson.rows);
   });
