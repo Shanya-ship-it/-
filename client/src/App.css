@@ -41,9 +41,10 @@
 
 .app-tab {
   flex: 1 1 1px;
-  padding: 0 16px;
+  margin: 0 16px;
   min-height: 0;
   overflow-y: auto;
+  width: calc(100% - 16px);
 }
 
 .App-link {
@@ -81,16 +82,20 @@
 }
 
 .list {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid white;
 }
 
 .list-head {
   background-color: #383c44;
+  position: sticky;
+  top: 0;
 }
 
 .list-item {
   padding: 4px 8px;
-  border: 2px solid white;
+  border: 1px solid white;
 }
 
 button {

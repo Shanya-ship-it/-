@@ -44,13 +44,17 @@ export const ContractList = () => {
           </tr>
         </thead>
         <tbody className="list-body">
-          {contracts.map((user) => (
-            <tr key={user.id} className="list-row">
-              {contractPropertyList.map((field) => (
-                <td className="list-item" key={field}>
-                  {user[field].toString()}
-                </td>
-              ))}
+          {contracts.map((contract) => (
+            <tr key={contract.id} className="list-row">
+              {contractPropertyList.map((field) => {
+                const { format } = contractFieldMetadata[field];
+                const value = contract[field];
+                return (
+                  <td className="list-item" key={field}>
+                    {format ? format(value) : value.toString()}
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
