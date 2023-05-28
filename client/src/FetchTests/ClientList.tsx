@@ -13,7 +13,7 @@ export const ClientList = () => {
 
   const getClients = async () => {
     // Делаем запрос до бэка, фетч для обращения к ресурсам по сети, фетч("источник", объект конфигурации)
-    const res = await fetch("http://localhost:8080/client", {
+    const res = await fetch("http://localhost:8080/clients", {
       //(урл, дополнительные настройки)
       method: "GET",
       headers: { "Content-type": "application/json" },
@@ -22,6 +22,14 @@ export const ClientList = () => {
     const json: Client[] = await res.json();
     // Обновляем список клиентов
     setClients(json); //?
+  };
+
+  const deleteClient = async (id: string) => {
+    const res = await fetch(`http://localhost:8080/client/delete/${id}`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+    });
+    getClients();
   };
 
   // Загружаем список клиентов на первое открытие страницы (для визуализации объекта)
@@ -48,16 +56,26 @@ export const ClientList = () => {
                   {clientFieldMetadata[field].label}
                 </td>
               ))}
+              <td className="list-item">Редактировать</td>
+              <td className="list-item">Удалить</td>
             </tr>
           </thead>
           <tbody className="list-body">
-            {clients.map((user) => (
-              <tr key={user.id} className="list-row">
+            {clients.map((client) => (
+              <tr key={client.id} className="list-row">
                 {clientPropertyList.map((field) => (
                   <td className="list-item" key={field}>
-                    {user[field]}
+                    {client[field]}
                   </td>
                 ))}
+                <td className="list-item">
+                  <Link to={`/client/edit/${client.id}`}>
+                    <button>Редактировать</button>
+                  </Link>
+                </td>
+                <td className="list-item">
+                  <button onClick={() => deleteClient(client.id)}>Удалить</button>
+                </td>
               </tr>
             ))}
           </tbody>

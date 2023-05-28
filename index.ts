@@ -36,7 +36,26 @@ async function main() {
   });
 
   //ниже запросы к бд
-  app.get("/client", async (req, res) => {
+  app.get("/client/:id", async (req, res) => {
+    const id = req.params.id;
+    const {
+      rows: [client],
+    } = await query`
+      SELECT id "id"
+        ,name "name"
+        ,surname "surname"
+        ,adress "adress"
+        ,phoneNumber "phoneNumber"
+        ,email "email"
+        ,company "company"
+      FROM clients
+      WHERE id=${id}
+    `;
+
+    res.json(client); //в ответку передаем данные таблицы рядом, в формате жсон
+  }); //достать всю таблицу клиентов
+
+  app.get("/clients", async (req, res) => {
     const z1 = await pool.query(`
       SELECT id "id"
         ,name "name"
@@ -46,6 +65,7 @@ async function main() {
         ,email "email"
         ,company "company"
       FROM clients
+      ORDER BY surname,name
     `);
     res.json(z1.rows); //в ответку передаем данные таблицы рядом, в формате жсон
   }); //достать всю таблицу клиентов
@@ -65,24 +85,34 @@ async function main() {
   });
 
   app.post("/client", async (req, res) => {
-    const { name, surname, adress, phoneNumber, email, company } = req.body;
-    const newPerson = await query`
+    const { id, name, surname, adress, phoneNumber, email, company } = req.body;
+
+    if (id) {
+      const update = await query`
+      UPDATE clients SET (name, surname, adress, phoneNumber, email, company) = 
+      (${name}, ${surname}, ${adress}, ${phoneNumber}, ${email}, ${company})
+      WHERE id=${id}`;
+    } else {
+      const newPerson = await query`
       INSERT INTO clients (name, surname, adress, phoneNumber, email, company)
         VALUES (${name}, ${surname}, ${adress}, ${phoneNumber}, ${email}, ${company})
+      RETURNING *`;
+      res.json(newPerson.rows);
+    }
+  });
+
+  app.post("/client", async (req, res) => {
+    const { id } = req.body;
+    const newPerson = await query`
+      SELECT clients (name, surname, adress, phoneNumber, email, company)
+        WHERE id=(${id})
       RETURNING *`;
     res.json(newPerson.rows);
   });
 
-  app.post("/update", async (req, res) => {
-    const { id, name, adress } = req.body;
-    const zapros =
-      await query`UPDATE clients set name = ${name}, adress = ${adress} where id = ${id} RETURNING *`;
-    res.json(zapros);
-  });
-
-  app.post("/delete", async (req, res) => {
-    const { id } = req.body;
-    const zapros = await query`DELETE FROM tablet where id = ${id}`;
+  app.post("/client/delete/:id", async (req, res) => {
+    const { id } = req.params;
+    const zapros = await query`DELETE FROM clients where id = ${id}`;
     res.json(zapros.rows);
   });
 }

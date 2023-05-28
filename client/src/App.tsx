@@ -8,6 +8,7 @@ import { AddClient } from "./FetchTests/AddClient"; //
 import { ContractList } from "./FetchTests/Contract";
 import { Welcome } from "./FetchTests/Welcome";
 import { Header } from "./FetchTests/Header";
+import { EditClient } from "./FetchTests/EditClients";
 
 //link - привязка урл и пас и описание
 //route path - путь урл, элемент - привязка объекта к урл
@@ -19,9 +20,10 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/main" element={<Welcome />} />
-          <Route path="/client" element={<ClientList />} />
+          <Route path="/clients" element={<ClientList />} />
           <Route path="/client/add" element={<AddClient />} />
           <Route path="/contracts" element={<ContractList />} />
+          <Route path="/client/edit/:id?" element={<EditClient />} />
         </Routes>
       </BrowserRouter>
     </div>
