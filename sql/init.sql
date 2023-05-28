@@ -5,12 +5,12 @@ CREATE TABLE IF NOT EXISTS clients (
   name CHAR(300),
   surname CHAR(300),
   adress CHAR(300),
-  phonenumber CHAR(15),
+  phoneNumber CHAR(15),
   email CHAR(300),
   company CHAR(100)
 );
 
-INSERT INTO clients (id, name, surname, adress, phonenumber, email, company)
+INSERT INTO clients (id, name, surname, adress, phoneNumber, email, company)
 VALUES
   ('0d067d44-fe99-450f-9044-2a7cb915f78c', 'София',    'Матвеева', 'ул. Андрюшкина 23',  '123456789', 'sofia@mail.ru',  'sofiaCO'),
   ('05a7fae3-26c5-4bf9-81f3-5885b330ba3c', 'Виктория', 'Пирогова', 'ул. Пушника 36',     '23567891',  'vika@mail.ru',   'vikaCO'),
