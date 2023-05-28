@@ -18,9 +18,9 @@ const App = () => {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={<Welcome />} />
-          <Route path="/clients" element={<ClientList />} />
-          <Route path="/add" element={<AddClient />} />
+          <Route path="/main" element={<Welcome />} />
+          <Route path="/client" element={<ClientList />} />
+          <Route path="/client/add" element={<AddClient />} />
           <Route path="/contracts" element={<ContractList />} />
         </Routes>
       </BrowserRouter>

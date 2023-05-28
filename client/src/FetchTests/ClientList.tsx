@@ -31,34 +31,38 @@ export const ClientList = () => {
 
   //здесь происходит красивое отображение моей таблицы
   return (
-    <div className="app-tab">
-      <button onClick={getClients}>Обновить список клиентов</button>
-      <Link to="/add">
-        <button>Добавить клиента</button>
-      </Link>
+    <div className="app-tab" style={{ display: "flex", flexDirection: "column" }}>
+      <div>
+        <button onClick={getClients}>Обновить список клиентов</button>
+        <Link to="/client/add">
+          <button>Добавить клиента</button>
+        </Link>
+      </div>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
-      <table className="list">
-        <thead className="list-head">
-          <tr className="list-row">
-            {clientPropertyList.map((field) => (
-              <td className="list-item" key={field}>
-                {clientFieldMetadata[field].label}
-              </td>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="list-body">
-          {clients.map((user) => (
-            <tr key={user.id} className="list-row">
+      <div style={{ flex: "1", overflow: "auto" }}>
+        <table className="list">
+          <thead className="list-head">
+            <tr className="list-row">
               {clientPropertyList.map((field) => (
                 <td className="list-item" key={field}>
-                  {user[field]}
+                  {clientFieldMetadata[field].label}
                 </td>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="list-body">
+            {clients.map((user) => (
+              <tr key={user.id} className="list-row">
+                {clientPropertyList.map((field) => (
+                  <td className="list-item" key={field}>
+                    {user[field]}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

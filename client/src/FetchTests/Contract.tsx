@@ -30,35 +30,39 @@ export const ContractList = () => {
 
   //здесь происходит красивое отображение моей таблицы
   return (
-    <div className="app-tab">
-      <button onClick={getContract}>Обновить список контрактов</button>
+    <div className="app-tab" style={{ display: "flex", flexDirection: "column" }}>
+      <div>
+        <button onClick={getContract}>Обновить список контрактов</button>
+      </div>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
-      <table className="list">
-        <thead className="list-head">
-          <tr className="list-row">
-            {contractPropertyList.map((field) => (
-              <td className="list-item" key={field}>
-                {contractFieldMetadata[field].label}
-              </td>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="list-body">
-          {contracts.map((contract) => (
-            <tr key={contract.id} className="list-row">
-              {contractPropertyList.map((field) => {
-                const { format } = contractFieldMetadata[field];
-                const value = contract[field];
-                return (
-                  <td className="list-item" key={field}>
-                    {format ? format(value) : value.toString()}
-                  </td>
-                );
-              })}
+      <div style={{ flex: "1", overflow: "auto" }}>
+        <table className="list">
+          <thead className="list-head">
+            <tr className="list-row">
+              {contractPropertyList.map((field) => (
+                <td className="list-item" key={field}>
+                  {contractFieldMetadata[field].label}
+                </td>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="list-body">
+            {contracts.map((contract) => (
+              <tr key={contract.id} className="list-row">
+                {contractPropertyList.map((field) => {
+                  const { format } = contractFieldMetadata[field];
+                  const value = contract[field];
+                  return (
+                    <td className="list-item" key={field}>
+                      {format ? format(value) : value.toString()}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
