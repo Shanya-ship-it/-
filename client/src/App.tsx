@@ -1,6 +1,6 @@
 //начальная страница , которая открывается при запуске сервера.
 //тут кноочки и рисование страницы
-import { Route, Routes, BrowserRouter } from "react-router-dom"; //импорт роутов
+import { Route, Routes, BrowserRouter, Navigate, useNavigate, useLocation } from "react-router-dom"; //импорт роутов
 
 import "./App.css"; //импорт цсс для красоты
 import { ClientList } from "./FetchTests/ClientList"; //импорт файла с логикой выполнения запроса для таблицы с клиентами
@@ -19,6 +19,10 @@ interface AuthProviderProps {
   children?: React.ReactNode;
 }
 
+interface ProtectedRouteProps {
+  children?: React.ReactNode;
+}
+
 interface AuthContextValue {
   token: string | null;
   onLogin: () => Promise<void>;
@@ -26,7 +30,7 @@ interface AuthContextValue {
 }
 
 const defaultValue: AuthContextValue = {
-  token: null,
+  token: "",
   onLogin: async () => console.log("Default onLogin"),
   onLogout: async () => console.log("Default onLogout"),
 };
@@ -38,7 +42,7 @@ const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve,
 
 const fakeAuth = async (): Promise<string> => {
   await sleep(250);
-  return "abababawawawa";
+  return "thisisfuckingtoken";
 };
 
 export const useAuth = () => {
@@ -50,9 +54,17 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = React.useState<string | null>(null);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleLogin = async () => {
     const token = await fakeAuth();
     setToken(token);
+
+    const origin = location.state?.from?.pathname || "/main";
+    navigate(origin);
+
+    navigate("/test2");
     console.log("handleLogin");
     console.log(token);
   };
@@ -64,12 +76,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const value: AuthContextValue = {
-    token: "",
+    token: token,
     onLogin: handleLogin,
     onLogout: handleLogout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const { token } = useAuth();
+  const location = useLocation();
+
+  if (!token) {
+    return <Navigate to="/main" replace state={{ from: location }} />;
+  }
+
+  return <> {children}</>;
 };
 
 //link - привязка урл и пас и описание
@@ -87,7 +110,14 @@ const App = () => {
             <Route path="/contracts" element={<ContractList />} />
             <Route path="/client/edit/:id?" element={<EditClient />} />
             <Route path="/test" element={<TestAuth />} />
-            <Route path="/test2" element={<TestAuth2 />} />
+            <Route
+              path="/test2"
+              element={
+                <ProtectedRoute>
+                  <TestAuth2 />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

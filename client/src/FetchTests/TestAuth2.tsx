@@ -6,10 +6,11 @@ import { useAuth } from "../App";
 
 export const TestAuth2 = () => {
   const { onLogout, token } = useAuth();
+  console.log(token);
   return (
     <div>
       <h1>TEST AUTH 2 </h1>
-      Authenticated as {token}
+      <p>Authenticated as {token}</p>
       {token && (
         <button type="button" onClick={onLogout}>
           Sign out

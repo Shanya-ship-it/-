@@ -10,12 +10,9 @@ export const TestAuth = () => {
   return (
     <>
       <h1>TEST AUTH </h1>
-
-      <Link to={`/test2`}>
-        <button type="button" onClick={onLogin}>
-          Sign in
-        </button>
-      </Link>
+      <button type="button" onClick={onLogin}>
+        Sign in
+      </button>
     </>
   );
 };
