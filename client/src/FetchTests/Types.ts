@@ -20,10 +20,19 @@ export interface Contract {
   price: number;
 }
 
+export interface User {
+  id: string;
+  login: string;
+  password: string;
+}
+
 /** Свойства клиента для отрисовки */
 export type ClientProperties = Omit<Client, "id">; //омит ("пропускать") - выбирает все свойства кроме того что мы написали внутри омита, в данном случае айди
 
 export type ContractProperties = Omit<Contract, "id" | "clientId">;
+
+export type UserProperties = Omit<User, "id">;
+
 /** Свойства для полей ввода */
 interface FieldMetadata {
   label: string;
@@ -56,8 +65,15 @@ export const contractFieldMetadata: Record<keyof ContractProperties, FieldMetada
   },
 };
 
+export const userFieldMetadata: Record<keyof UserProperties, FieldMetadata> = {
+  login: { label: "Login", type: "text" },
+  password: { label: "Password", type: "text" },
+};
+
 // тайпскрипт глупый, не догадывается, что список ключей это список ключей, поэтому тип надо затереть неправильный тип через as any
 /** Список полей клиента */
 export const clientPropertyList: (keyof ClientProperties)[] = Object.keys(clientFieldMetadata) as any;
 /** Список полей контракта */
 export const contractPropertyList: (keyof ContractProperties)[] = Object.keys(contractFieldMetadata) as any;
+
+export const userPropertyList: (keyof UserProperties)[] = Object.keys(userFieldMetadata) as any;

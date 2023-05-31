@@ -37,4 +37,16 @@ VALUES
   ('a5c0be17-e0f4-43f9-a616-06fc30d7409a', '3568ef37-1d9a-4cb2-abee-7d92e32451e4', '1999-01-08', '1999-04-29',	15006),
   ('76e537b6-06aa-45a9-8f9e-5e9d9e0d5196', 'ce5636f3-c29e-4ad7-999c-068ec2fc923f', '1999-01-08', '1999-05-29',	15007)
 ON CONFLICT (id) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS users (
+	id UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
+	login CHAR(300),
+	password CHAR (500)
+);
+
+INSERT INTO users (id, login, password) VALUES
+('da983293-fd5e-4a64-8fc0-878389dcc58c','OLYA', 'olyapass'),
+('464134b6-df50-4279-91f2-b34743d4e6e7','NIKITA', 'NIKITApass'),
+('190e2c6f-8753-4dc5-bdbd-dd3066ed7537','MISHA', 'MISHApass')
+ON CONFLICT (id) DO NOTHING;
 --= ඞ =--

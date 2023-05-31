@@ -13,6 +13,8 @@ import { EditClient } from "./FetchTests/EditClients";
 //импортировали страницу чтобы создать роут на нее.
 import { TestAuth } from "./FetchTests/TestAuth";
 import { TestAuth2 } from "./FetchTests/TestAuth2";
+import { RegUser } from "./FetchTests/RegUsr";
+
 import React, { useContext } from "react";
 
 interface AuthProviderProps {
@@ -118,6 +120,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="/user" element={<RegUser />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>
