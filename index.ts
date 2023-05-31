@@ -160,7 +160,7 @@ async function main() {
   });*/
 
   app.post("/user", async (req, res) => {
-    const { login, password } = req.body;
+    const { login, password } = req.body as { login: string; password: string };
 
     const usr = await query`
       SELECT login FROM users WHERE login = (${login})`;
@@ -174,6 +174,7 @@ async function main() {
       res.json(usr.rows);
       console.log("got ya");
     } else {
+      res.sendStatus(401);
       //console.log(usr + "" + pass);
       console.log("no match");
     }
