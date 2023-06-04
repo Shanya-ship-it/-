@@ -39,34 +39,24 @@ async function main() {
     console.log(`Example app listening on port ${port}`);
   });
 
-  //токеныыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы
-  //создаем приваткей
-
-  const usr = await query`SELECT name FROM users WHERE id='492029c0-547c-456e-9c7e-cdc629112518'`;
-  const emael = await query`SELECT email FROM users WHERE id='492029c0-547c-456e-9c7e-cdc629112518'`;
-  const privateKey = "private.key";
-
-  //создаем токен
-
-  app.get("/token", function (req, res) {
-    const token = jwt.sign({ name: usr, email: emael }, "secret", { expiresIn: "2h" });
-    //console.log(token);
-    res.send(token);
-  });
-
   // Register a route that requires a valid token to view data
-  app.get("/api", function (req, res) {
+  /*app.get("/api", function (req, res) {
     var token = req.query.token;
-    jwt.verify(token, "secret", function (err) {
+    jwt.verify(token, "private.key", function (err: any) {
       if (!err) {
-        //var secrets = {'accountNumber' : '938291239','pin' : '11289','account' : 'Finance'};
-        console.log("нет ошибок вроде");
-        res.json("work!");
-      } else {
+         //var secrets = {'accountNumber' : '938291239','pin' : '11289','account' : 'Finance'};
+          console.log("нет ошибок вроде");
+         res.json("work!");
+       } else {
         res.send(err);
       }
     });
-  });
+});
+
+} else {
+  res.sendStatus(401);
+  console.log("no match");
+}*/
 
   //ниже запросы к бд
   app.get("/client/:id", async (req, res) => {
@@ -166,11 +156,17 @@ async function main() {
     SELECT login, password FROM users WHERE login=${login} and password=${password};`;
 
     if (usrpass.rows.length == 1) {
-      res.json(usrpass.rows);
+      //res.json(usrpass.rows);
       console.log("got ya");
+
+      //токеныыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы
+      //создаем приваткей
+      const privateKey = "private.key";
+      //создаем токен
+      const token = jwt.sign({ login: login, email: password }, privateKey, { expiresIn: "2h" });
+      res.json(token);
     } else {
       res.sendStatus(401);
-      console.log("no match");
     }
   });
 }

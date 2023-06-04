@@ -23,11 +23,13 @@ export const RegUser = () => {
     //console.log("тык по Войти");
     //console.log(user);
 
-    await fetch("http://localhost:8080/user", {
+    const tok = await fetch("http://localhost:8080/user", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(user),
     });
+    const json: string = await tok.json();
+    console.log(json);
     //console.log("тык по Войти");
     //console.log(user);
   };

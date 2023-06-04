@@ -16,7 +16,7 @@ export const ClientList = () => {
     const res = await fetch("http://localhost:8080/clients", {
       //(урл, дополнительные настройки)
       method: "GET",
-      headers: { "Content-type": "application/json" },
+      headers: { "Content-type": "application/json" }, //тут где-то должен быть токен
     });
     // Парсим полученный JSON
     const json: Client[] = await res.json();
