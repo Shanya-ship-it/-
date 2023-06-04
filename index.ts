@@ -41,7 +41,7 @@ async function main() {
 
   //токеныыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы
   //создаем приваткей
-  /*
+
   const usr = await query`SELECT name FROM users WHERE id='492029c0-547c-456e-9c7e-cdc629112518'`;
   const emael = await query`SELECT email FROM users WHERE id='492029c0-547c-456e-9c7e-cdc629112518'`;
   const privateKey = "private.key";
@@ -66,7 +66,7 @@ async function main() {
         res.send(err);
       }
     });
-  });*/
+  });
 
   //ниже запросы к бд
   app.get("/client/:id", async (req, res) => {
@@ -162,20 +162,14 @@ async function main() {
   app.post("/user", async (req, res) => {
     const { login, password } = req.body as { login: string; password: string };
 
-    const usr = await query`
-      SELECT login FROM users WHERE login = (${login})`;
-    const pass = await query`
-      SELECT password FROM users WHERE password = (${password})`;
+    const usrpass = await query`
+    SELECT login, password FROM users WHERE login=${login} and password=${password};`;
 
-    console.log(JSON.stringify(usr));
-    console.log(JSON.stringify(pass));
-
-    if (login == usr && password == pass) {
-      res.json(usr.rows);
+    if (usrpass.rows.length == 1) {
+      res.json(usrpass.rows);
       console.log("got ya");
     } else {
       res.sendStatus(401);
-      //console.log(usr + "" + pass);
       console.log("no match");
     }
   });

@@ -9,27 +9,27 @@ const initialUserValues: UserProperties = {
 export const RegUser = () => {
   const [user, setUser] = useState<UserProperties>(initialUserValues); // начальное состояние
 
-  /*const addUser = async () => {
+  const addUser = async () => {
     // Передаем данные в бэк
     await fetch("http://localhost:8080/user", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(user), //джсон стринггифай переводит данные в жсон формат
     });
-    console.log("тык по Создать");
-  };*/
+    //console.log("тык по Создать");
+  };
 
   const loginUser = async () => {
-    console.log("тык по Войти");
-    console.log(user);
+    //console.log("тык по Войти");
+    //console.log(user);
 
     await fetch("http://localhost:8080/user", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(user),
     });
-    console.log("тык по Войти");
-    console.log(user);
+    //console.log("тык по Войти");
+    //console.log(user);
   };
 
   return (
@@ -57,7 +57,7 @@ export const RegUser = () => {
         })}
       </table>
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <button>Создать</button>
+        <button onClick={addUser}>Создать</button>
         {<button onClick={loginUser}>Войти</button>}
       </div>
     </div>
