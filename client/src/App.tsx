@@ -16,6 +16,8 @@ import { TestAuth2 } from "./FetchTests/TestAuth2";
 import { RegUser } from "./FetchTests/RegUsr";
 
 import React, { useContext } from "react";
+import { RequestList } from "./FetchTests/Request";
+import { ContractJoinList } from "./FetchTests/ContractJoin";
 
 interface AuthProviderProps {
   children?: React.ReactNode;
@@ -110,7 +112,9 @@ const App = () => {
             <Route path="/clients" element={<ClientList />} />
             <Route path="/client/add" element={<AddClient />} />
             <Route path="/contracts" element={<ContractList />} />
+            <Route path="/contractsj" element={<ContractJoinList />} />
             <Route path="/client/edit/:id?" element={<EditClient />} />
+            <Route path="/requests" element={<RequestList />} />
             <Route path="/test" element={<TestAuth />} />
             <Route
               path="/test2"

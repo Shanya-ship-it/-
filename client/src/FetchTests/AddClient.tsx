@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import { ClientProperties, clientPropertyList, clientFieldMetadata } from "./Types";
 
 const initialClientValues: ClientProperties = {
-  name: "",
-  surname: "",
-  adress: "",
+  firstname: "",
+  lastname: "",
+  secondname: "",
   email: "",
   phoneNumber: "",
-  company: "",
 };
 
 export const AddClient = () => {

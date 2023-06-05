@@ -5,12 +5,12 @@ import { ClientProperties, clientPropertyList, clientFieldMetadata, Client } fro
 
 const initialClientValues: Client = {
   id: "",
-  name: "",
-  surname: "",
-  adress: "",
+  id_req: "",
+  firstname: "",
+  lastname: "",
+  secondname: "",
   email: "",
   phoneNumber: "",
-  company: "",
 };
 
 export const EditClient = () => {

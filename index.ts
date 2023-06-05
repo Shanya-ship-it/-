@@ -65,60 +65,89 @@ async function main() {
       rows: [client],
     } = await query`
       SELECT id "id"
-        ,name "name"
-        ,surname "surname"
-        ,adress "adress"
+        ,first_name "firstname"
+        ,last_name "lastname"
+        ,second_name "secondname"
         ,phoneNumber "phoneNumber"
         ,email "email"
-        ,company "company"
-      FROM clients
+      FROM client
       WHERE id=${id}
     `;
 
     res.json(client); //в ответку передаем данные таблицы рядом, в формате жсон
-  }); //достать всю таблицу клиентов
+  });
 
+  //достать всю таблицу клиентов
   app.get("/clients", async (req, res) => {
     const z1 = await pool.query(`
-      SELECT id "id"
-        ,name "name"
-        ,surname "surname"
-        ,adress "adress"
-        ,phoneNumber "phoneNumber"
-        ,email "email"
-        ,company "company"
-      FROM clients
-      ORDER BY surname,name
+    SELECT id "id"
+    ,first_name "firstname"
+    ,last_name "lastname"
+    ,second_name "secondname"
+    ,phoneNumber "phoneNumber"
+    ,email "email"
+      FROM client
+      ORDER BY last_name,first_name
     `);
     res.json(z1.rows); //в ответку передаем данные таблицы рядом, в формате жсон
   }); //достать всю таблицу клиентов
 
+  app.get("/requests", async (req, res) => {
+    const z2 = await pool.query(`
+    SELECT id_request "id"
+    ,first_name "firstname"
+    ,last_name "lastname"
+    ,second_name "secondname"
+    ,phoneNumber "phoneNumber"
+    ,status "status"
+    ,comment "comment"
+      FROM request
+    `);
+    res.json(z2.rows); //в ответку передаем данные таблицы рядом, в формате жсон
+  }); //достать всю таблицу заявок
+
   //contracts
-  app.get("/contracts", async (req, res) => {
+  /*app.get("/contracts", async (req, res) => {
     const z1 = await pool.query(`
-      SELECT id "id"
+      SELECT id_contract "id"
         ,clientId "clientId"
-        ,contractNumber "contractNumber"
-        ,dateBegin "dateBegin"
-        ,dateEnd "dateEnd"
+        ,singing_date "dateBegin"
+        ,completion_date "dateEnd"
         ,price "price"
-      FROM contracts
+      FROM contract
+    `);
+    res.json(z1.rows);
+  });*/
+
+  app.get("/contractsj", async (req, res) => {
+    const z1 = await pool.query(`
+      SELECT id_contract "id"
+        ,employee.first_name "employeeName"
+        ,client.first_name "clientName"
+        ,service.name "serviceName"
+        ,singing_date "dateBegin"
+        ,completion_date "dateEnd"
+        ,price "price"
+        FROM contract
+        JOIN employee ON employee.id_employee = contract.employeeID
+        JOIN client ON client.id = contract.clientID
+        JOIN service ON service.id_service = contract.serviceID;
     `);
     res.json(z1.rows);
   });
 
   app.post("/client", async (req, res) => {
-    const { id, name, surname, adress, phoneNumber, email, company } = req.body;
+    const { id, firstname, lastname, secondname, phoneNumber, email } = req.body;
 
     if (id) {
       const update = await query`
-      UPDATE clients SET (name, surname, adress, phoneNumber, email, company) = 
-      (${name}, ${surname}, ${adress}, ${phoneNumber}, ${email}, ${company})
+      UPDATE client SET (first_name, last_name, second_name, phoneNumber, email) = 
+      (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email})
       WHERE id=${id}`;
     } else {
       const newPerson = await query`
-      INSERT INTO clients (name, surname, adress, phoneNumber, email, company)
-        VALUES (${name}, ${surname}, ${adress}, ${phoneNumber}, ${email}, ${company})
+      INSERT INTO client (first_name, last_name, second_name, phoneNumber, email)
+        VALUES (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email})
       RETURNING *`;
       res.json(newPerson.rows);
     }
@@ -127,7 +156,7 @@ async function main() {
   app.post("/client", async (req, res) => {
     const { id } = req.body;
     const newPerson = await query`
-      SELECT clients (name, surname, adress, phoneNumber, email, company)
+      SELECT client (first_name, last_name, second_name, phoneNumber, email)
         WHERE id=(${id})
       RETURNING *`;
     res.json(newPerson.rows);
@@ -135,7 +164,7 @@ async function main() {
 
   app.post("/client/delete/:id", async (req, res) => {
     const { id } = req.params;
-    const zapros = await query`DELETE FROM clients where id = ${id}`;
+    const zapros = await query`DELETE FROM client where id = ${id}`;
     res.json(zapros.rows);
   });
 
