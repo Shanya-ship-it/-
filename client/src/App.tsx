@@ -96,7 +96,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   return <> {children}</>;
 };
-
+//
 //link - привязка урл и пас и описание
 //route path - путь урл, элемент - привязка объекта к урл
 const App = () => {
@@ -107,14 +107,7 @@ const App = () => {
           <Header />
           <Routes>
             <Route path="/main" element={<Welcome />} />
-            <Route
-              path="/clients"
-              element={
-                <ProtectedRoute>
-                  <ClientList />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/clients" element={<ClientList />} />
             <Route path="/client/add" element={<AddClient />} />
             <Route path="/contracts" element={<ContractList />} />
             <Route path="/client/edit/:id?" element={<EditClient />} />
