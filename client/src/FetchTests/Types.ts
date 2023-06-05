@@ -42,7 +42,7 @@ export interface Contract {
   clientId: string;
   serviceId: string;
   dateBegin: Date;
-  dateEnd: number;
+  dateEnd: Date;
   price: number;
 }
 
@@ -51,8 +51,6 @@ export interface ContractJoin {
   employeeName: string;
   clientName: string;
   serviceName: string;
-  dateBegin: Date;
-  dateEnd: number;
   price: number;
 }
 
@@ -133,8 +131,6 @@ export const contractJoinFieldMetadata: Record<keyof ContractJoinProperties, Fie
   employeeName: { label: "Сотрудник", type: "text" },
   clientName: { label: "Клиент", type: "text" },
   serviceName: { label: "Услуга", type: "text" },
-  dateBegin: { label: "Дата начала", type: "date", format: dateFormat },
-  dateEnd: { label: "Дата завершения", type: "date", format: dateFormat },
   price: {
     label: "Сумма",
     type: "number",

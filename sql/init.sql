@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS request (
 );
 CREATE TABLE IF NOT EXISTS client(
 	id UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
-	requestID UUID REFERENCES request (id_request),
+	requestID UUID REFERENCES request (id_request) ON DELETE CASCADE,
 	first_name CHAR(300),
 	last_name CHAR(300),
 	second_name CHAR(300),
@@ -40,11 +40,12 @@ CREATE TABLE IF NOT EXISTS service(
 );
 CREATE TABLE IF NOT EXISTS contract(
 	id_contract UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
-	employeeID UUID REFERENCES employee (id_employee),
-	clientID UUID REFERENCES client (id_client),
-	serviceID UUID REFERENCES service (id_service),
+	employeeID UUID REFERENCES employee (id_employee) ON DELETE CASCADE ,
+	clientID UUID REFERENCES client (id) ON DELETE CASCADE,
+	serviceID UUID REFERENCES service (id_service) ON DELETE CASCADE,
 	singing_date DATE,
-	completion_date DATE
+	completion_date DATE,
+	price NUMERIC
 );
 
 /*
@@ -78,5 +79,7 @@ INSERT INTO service (name, description, cost) VALUES
 	('Финишная шпаклевка стен под окраску', 'Финишная шпаклевка стен под окраску, ед.изм. м^2', 100),
 	('Высококачественное оштукатуривание стен и перегородок', 'Высококачественное оштукатуривание стен и перегородок цементно-песчанной смесью при толщине словя до 25 мм, ед.изм. м^2', 450),
 	('Строительнство холодного склада', 'Строительнство холоддного скалада, ед.изм. м^2', 90)
-	ON CONFLICT (name) DO NOTHING;*/
+	
+	ON CONFLICT (name) DO NOTHING; */
+
 --= ඞ =--

@@ -1,5 +1,5 @@
 //файл описания списка клиента, логика извлечения данных, запрос на сервер и вывод результата
-
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react"; //хуки
 import { ContractJoin, contractJoinFieldMetadata, contractJoinPropertyList } from "./Types";
 
@@ -21,6 +21,14 @@ export const ContractJoinList = () => {
     const json: ContractJoin[] = await res.json();
     // Обновляем state
     setContractsJoin(json); //
+  };
+
+  const deleteContractj = async (id: string) => {
+    const res = await fetch(`http://localhost:8080/contractj/delete/${id}`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+    });
+    getContractJoin();
   };
 
   // Загружаем список клиентов на первое открытие страницы (для визуализации объекта)
@@ -58,6 +66,14 @@ export const ContractJoinList = () => {
                     </td>
                   );
                 })}
+                <td className="list-item">
+                  <Link to={`/contractsj/edit/${contractJoin.id}`}>
+                    <button>Редактировать</button>
+                  </Link>
+                </td>
+                <td className="list-item">
+                  <button onClick={() => deleteContractj(contractJoin.id)}>Удалить</button>
+                </td>
               </tr>
             ))}
           </tbody>

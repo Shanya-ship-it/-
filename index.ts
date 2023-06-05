@@ -122,8 +122,8 @@ async function main() {
   app.get("/contractsj", async (req, res) => {
     const z1 = await pool.query(`
       SELECT id_contract "id"
-        ,employee.first_name "employeeName"
-        ,client.first_name "clientName"
+        ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
+        ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
         ,service.name "serviceName"
         ,singing_date "dateBegin"
         ,completion_date "dateEnd"
@@ -133,6 +133,7 @@ async function main() {
         JOIN client ON client.id = contract.clientID
         JOIN service ON service.id_service = contract.serviceID;
     `);
+
     res.json(z1.rows);
   });
 
@@ -149,8 +150,19 @@ async function main() {
       INSERT INTO client (first_name, last_name, second_name, phoneNumber, email)
         VALUES (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email})
       RETURNING *`;
+      await query`INSERT INTO contract (employeeID, clientID, serviceID, singing_date, completion_date, price) 
+      VALUES ('22efd401-ea5a-45f8-892b-5e019556ec60', (SELECT id FROM client WHERE first_name=(${firstname})), '03cd9074-3f19-43dd-9756-50821f9d6da4', '2000-01-01', '2000-01-01', '00')`;
+
       res.json(newPerson.rows);
     }
+  });
+
+  app.post("/constactj", async (req, res) => {
+    const { id, employeeID, clientID, serviceID, price } = req.body;
+    const update = await query`
+      UPDATE contract SET (employeeID, clientID, serviceID, price) = 
+      (${employeeID}, ${clientID}, ${serviceID}, ${serviceID}, ${price})
+      WHERE id=${id}`;
   });
 
   app.post("/client", async (req, res) => {
@@ -165,6 +177,12 @@ async function main() {
   app.post("/client/delete/:id", async (req, res) => {
     const { id } = req.params;
     const zapros = await query`DELETE FROM client where id = ${id}`;
+    res.json(zapros.rows);
+  });
+
+  app.post("/contractj/delete/:id", async (req, res) => {
+    const { id } = req.params;
+    const zapros = await query`DELETE FROM contract where id = ${id}`;
     res.json(zapros.rows);
   });
 
