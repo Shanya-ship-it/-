@@ -9,6 +9,7 @@ import { ContractList } from "./FetchTests/Contract";
 import { Welcome } from "./FetchTests/Welcome";
 import { Header } from "./FetchTests/Header";
 import { EditClient } from "./FetchTests/EditClients";
+import { SearchClient } from "./FetchTests/SearchClient";
 
 //импортировали страницу чтобы создать роут на нее.
 import { TestAuth } from "./FetchTests/TestAuth";
@@ -116,6 +117,7 @@ const App = () => {
             <Route path="/contractsj" element={<ContractJoinList />} />
             <Route path="/contractsj/edit/:id?" element={<EditContractJ />} />
             <Route path="/client/edit/:id?" element={<EditClient />} />
+            <Route path="/client/search/" element={<SearchClient />} />
             <Route path="/requests" element={<RequestList />} />
             <Route path="/test" element={<TestAuth />} />
             <Route

@@ -37,8 +37,8 @@ export const EditContractJ = () => {
     getContractJoin();
   }, []);
 
-  const updateClient = async () => {
-    await fetch("http://localhost:8080/contractj", {
+  const updateContactj = async () => {
+    await fetch("http://localhost:8080/constactj", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(contractj),
@@ -70,7 +70,7 @@ export const EditContractJ = () => {
         })}
       </table>
       <div style={{ display: "flex", flexDirection: "row" }}>
-        {id && <button onClick={updateClient}>Редактировать</button>}
+        {id && <button onClick={updateContactj}>Редактировать</button>}
       </div>
     </div>
   );

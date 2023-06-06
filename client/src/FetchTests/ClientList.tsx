@@ -45,6 +45,9 @@ export const ClientList = () => {
         <Link to="/client/add">
           <button>Добавить клиента</button>
         </Link>
+        <Link to={`/client/search/`}>
+          <button>Поиск клиента</button>
+        </Link>
       </div>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
       <div style={{ flex: "1", overflow: "auto" }}>
@@ -58,6 +61,7 @@ export const ClientList = () => {
               ))}
               <td className="list-item">Редактировать</td>
               <td className="list-item">Удалить</td>
+              <td className="list-item">Поиск</td>
             </tr>
           </thead>
           <tbody className="list-body">

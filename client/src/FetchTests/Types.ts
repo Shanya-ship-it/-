@@ -3,7 +3,9 @@
 
 export interface Request {
   id: string;
-  fullname: string;
+  firstname: string;
+  lastname: string;
+  secondname: string;
   phoneNumber: string;
   status: string;
   comment: string;
@@ -85,7 +87,9 @@ const moneyFormat = (money: string) =>
 
 /** Словарь свойств полей ввода */
 export const requestFieldMetadata: Record<keyof RequestProperties, FieldMetadata> = {
-  fullname: { label: "Полное Имя", type: "text" },
+  firstname: { label: "Имя", type: "text" },
+  lastname: { label: "Фамилия", type: "text" },
+  secondname: { label: "Отчество", type: "text" },
   phoneNumber: { label: "Номер телефона", type: "string" },
   status: { label: "Статус", type: "text" },
   comment: { label: "Комментарий", type: "text" },

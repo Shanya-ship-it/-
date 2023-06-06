@@ -77,6 +77,26 @@ async function main() {
     res.json(client); //в ответку передаем данные таблицы рядом, в формате жсон
   });
 
+  app.get("/contractj/:id", async (req, res) => {
+    const id = req.params.id;
+    const {
+      rows: [constactj],
+    } = await query`
+      SELECT id_contract "id"
+        ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
+        ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
+        ,service.name "serviceName"
+        ,price "price"
+      FROM contract
+      JOIN employee ON employee.id_employee = contract.employeeID
+      JOIN client ON client.id = contract.clientID
+      JOIN service ON service.id_service = contract.serviceID
+      WHERE id_contract=${id};
+    `;
+
+    res.json(constactj); //в ответку передаем данные таблицы рядом, в формате жсон
+  });
+
   //достать всю таблицу клиентов
   app.get("/clients", async (req, res) => {
     const z1 = await pool.query(`
@@ -158,11 +178,11 @@ async function main() {
   });
 
   app.post("/constactj", async (req, res) => {
-    const { id, employeeID, clientID, serviceID, price } = req.body;
+    const { id, employeeName, clientName, serviceName, price } = req.body;
     const update = await query`
       UPDATE contract SET (employeeID, clientID, serviceID, price) = 
-      (${employeeID}, ${clientID}, ${serviceID}, ${serviceID}, ${price})
-      WHERE id=${id}`;
+      ((SELECT employee.id_employee FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id_service FROM service WHERE service.name=${serviceName}),${price})
+      WHERE id_contract=${id}`;
   });
 
   app.post("/client", async (req, res) => {
@@ -174,6 +194,15 @@ async function main() {
     res.json(newPerson.rows);
   });
 
+  app.post("/client", async (req, res) => {
+    const { name } = req.body;
+    const searchPerson = await query`
+      SELECT client (first_name, last_name, second_name, phoneNumber, email)
+        WHERE first_name=(${name})
+      RETURNING *`;
+    res.json(searchPerson.rows);
+  });
+
   app.post("/client/delete/:id", async (req, res) => {
     const { id } = req.params;
     const zapros = await query`DELETE FROM client where id = ${id}`;
@@ -182,7 +211,7 @@ async function main() {
 
   app.post("/contractj/delete/:id", async (req, res) => {
     const { id } = req.params;
-    const zapros = await query`DELETE FROM contract where id = ${id}`;
+    const zapros = await query`DELETE FROM contract where id_contract = ${id}`;
     res.json(zapros.rows);
   });
 
