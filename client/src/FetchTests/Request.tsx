@@ -18,6 +18,14 @@ export const RequestList = () => {
     setRequests(json); //?
   };
 
+  const deleteRequest = async (id: string) => {
+    const res = await fetch(`http://localhost:8080/request/delete/${id}`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+    });
+    getRequest();
+  };
+
   useEffect(() => {
     getRequest();
   }, []);
@@ -46,6 +54,9 @@ export const RequestList = () => {
                     {request[field]}
                   </td>
                 ))}
+                <td className="list-item">
+                  <button onClick={() => deleteRequest(request.id)}>Удалить</button>
+                </td>
               </tr>
             ))}
           </tbody>

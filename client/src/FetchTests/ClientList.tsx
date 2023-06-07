@@ -61,7 +61,6 @@ export const ClientList = () => {
               ))}
               <td className="list-item">Редактировать</td>
               <td className="list-item">Удалить</td>
-              <td className="list-item">Поиск</td>
             </tr>
           </thead>
           <tbody className="list-body">

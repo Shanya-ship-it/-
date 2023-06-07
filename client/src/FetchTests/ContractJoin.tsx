@@ -42,6 +42,9 @@ export const ContractJoinList = () => {
       <div>
         <button onClick={getContractJoin}>Обновить список контрактов</button>
       </div>
+      <Link to={`/contractj/add/`}>
+        <button>Создать контракт</button>
+      </Link>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
       <div style={{ flex: "1", overflow: "auto" }}>
         <table className="list">

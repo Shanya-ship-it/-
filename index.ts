@@ -1,16 +1,12 @@
 //файл для запуска сервера
 
-//импорт нужных мне фреймворков (или просто важных штук) ,
-//дотенв для окр.пер.  экспресс для веб, патх - путь
+//импорт нужных мне фреймворков,
+//dotenv для окр.пер. экспресс для веб, path - путь
 
-import dotenv from "dotenv"; //неуверена что это мне нужно
+import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import { pool, initDb, query } from "./db"; //импорт бд
-
-import { JsonWebKey } from "crypto";
-
-const jwt = require("jsonwebtoken"); //для токена
 
 async function main() {
   console.log("Hello! Server starting uwu");
@@ -24,41 +20,24 @@ async function main() {
   //то есть конфиг читает моий файл где пер.окружения, парс контент и еще что-то куча
   dotenv.config();
 
-  //создать объект экспресс чтобы с ним работать (создаем объект приложения)
+  //создать объект экспресс (приложения) чтобы с ним работать
   const app: Express = express();
 
   //Встроенный посредник, разбирающий входящие запросы в объект в формате JSON. основан на body-parser.
   //переводит данные в формат жсон
   app.use(express.json());
   app.use(cors());
+  //старт сервера
   app.get("/", (req: Request, res: Response) => {
     res.send("Hello World From the Typescript Server!");
   });
-
+  //прослушка порта
   app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
   });
 
-  // Register a route that requires a valid token to view data
-  /*app.get("/api", function (req, res) {
-    var token = req.query.token;
-    jwt.verify(token, "private.key", function (err: any) {
-      if (!err) {
-         //var secrets = {'accountNumber' : '938291239','pin' : '11289','account' : 'Finance'};
-          console.log("нет ошибок вроде");
-         res.json("work!");
-       } else {
-        res.send(err);
-      }
-    });
-});
-
-} else {
-  res.sendStatus(401);
-  console.log("no match");
-}*/
-
-  //ниже запросы к бд
+  /** Запросы к бд */
+  //Достать одного клиента по id
   app.get("/client/:id", async (req, res) => {
     const id = req.params.id;
     const {
@@ -71,92 +50,26 @@ async function main() {
         ,phoneNumber "phoneNumber"
         ,email "email"
       FROM client
-      WHERE id=${id}
-    `;
-
+      WHERE id=${id}`;
     res.json(client); //в ответку передаем данные таблицы рядом, в формате жсон
-  });
-
-  app.get("/contractj/:id", async (req, res) => {
-    const id = req.params.id;
-    const {
-      rows: [constactj],
-    } = await query`
-      SELECT id_contract "id"
-        ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
-        ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
-        ,service.name "serviceName"
-        ,price "price"
-      FROM contract
-      JOIN employee ON employee.id_employee = contract.employeeID
-      JOIN client ON client.id = contract.clientID
-      JOIN service ON service.id_service = contract.serviceID
-      WHERE id_contract=${id};
-    `;
-
-    res.json(constactj); //в ответку передаем данные таблицы рядом, в формате жсон
   });
 
   //достать всю таблицу клиентов
   app.get("/clients", async (req, res) => {
-    const z1 = await pool.query(`
-    SELECT id "id"
-    ,first_name "firstname"
-    ,last_name "lastname"
-    ,second_name "secondname"
-    ,phoneNumber "phoneNumber"
-    ,email "email"
-      FROM client
-      ORDER BY last_name,first_name
-    `);
-    res.json(z1.rows); //в ответку передаем данные таблицы рядом, в формате жсон
-  }); //достать всю таблицу клиентов
-
-  app.get("/requests", async (req, res) => {
-    const z2 = await pool.query(`
-    SELECT id_request "id"
-    ,first_name "firstname"
-    ,last_name "lastname"
-    ,second_name "secondname"
-    ,phoneNumber "phoneNumber"
-    ,status "status"
-    ,comment "comment"
-      FROM request
-    `);
-    res.json(z2.rows); //в ответку передаем данные таблицы рядом, в формате жсон
-  }); //достать всю таблицу заявок
-
-  //contracts
-  /*app.get("/contracts", async (req, res) => {
-    const z1 = await pool.query(`
-      SELECT id_contract "id"
-        ,clientId "clientId"
-        ,singing_date "dateBegin"
-        ,completion_date "dateEnd"
-        ,price "price"
-      FROM contract
-    `);
-    res.json(z1.rows);
-  });*/
-
-  app.get("/contractsj", async (req, res) => {
-    const z1 = await pool.query(`
-      SELECT id_contract "id"
-        ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
-        ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
-        ,service.name "serviceName"
-        ,singing_date "dateBegin"
-        ,completion_date "dateEnd"
-        ,price "price"
-        FROM contract
-        JOIN employee ON employee.id_employee = contract.employeeID
-        JOIN client ON client.id = contract.clientID
-        JOIN service ON service.id_service = contract.serviceID;
-    `);
-
+    const z1 = await pool.query(
+      `SELECT id "id"
+      ,first_name "firstname"
+      ,last_name "lastname"
+      ,second_name "secondname"
+      ,phoneNumber "phoneNumber"
+      ,email "email"
+        FROM client
+        ORDER BY last_name,first_name`
+    );
     res.json(z1.rows);
   });
 
+  //запрос если есть id - редактируем клиента, если нет id - добавляем нового клиента
   app.post("/client", async (req, res) => {
     const { id, firstname, lastname, secondname, phoneNumber, email } = req.body;
 
@@ -177,6 +90,62 @@ async function main() {
     }
   });
 
+  //search with name
+  app.get("/clientS", async (req, res) => {
+    const { name } = req.body;
+    const searchPerson = await query`
+        SELECT first_name FROM client
+          WHERE first_name=(${name})`;
+    console.log(searchPerson);
+    res.json(searchPerson.rows);
+  });
+
+  //удалить клиента по id
+  app.post("/client/delete/:id", async (req, res) => {
+    const { id } = req.params;
+    const zapros = await query`DELETE FROM client where id = ${id}`;
+    res.json(zapros.rows);
+  });
+
+  //Достать один контракт по id
+  app.get("/contractj/:id", async (req, res) => {
+    const id = req.params.id;
+    const {
+      rows: [constactj],
+    } = await query`
+      SELECT id_contract "id"
+      ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
+      ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
+      ,service.name "serviceName"
+      ,price "price"
+      FROM contract
+      JOIN employee ON employee.id_employee = contract.employeeID
+      JOIN client ON client.id = contract.clientID
+      JOIN service ON service.id_service = contract.serviceID
+      WHERE id_contract=${id};
+    `;
+    res.json(constactj);
+  });
+
+  //достать всю таблицу контрактов
+  app.get("/contractsj", async (req, res) => {
+    const z1 = await pool.query(`
+      SELECT id_contract "id"
+        ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
+        ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
+        ,service.name "serviceName"
+        ,singing_date "dateBegin"
+        ,completion_date "dateEnd"
+        ,price "price"
+        FROM contract
+        JOIN employee ON employee.id_employee = contract.employeeID
+        JOIN client ON client.id = contract.clientID
+        JOIN service ON service.id_service = contract.serviceID;
+    `);
+    res.json(z1.rows);
+  });
+
+  //запрос редактирования контракта только по имени
   app.post("/constactj", async (req, res) => {
     const { id, employeeName, clientName, serviceName, price } = req.body;
     const update = await query`
@@ -185,65 +154,51 @@ async function main() {
       WHERE id_contract=${id}`;
   });
 
-  app.post("/client", async (req, res) => {
-    const { id } = req.body;
-    const newPerson = await query`
-      SELECT client (first_name, last_name, second_name, phoneNumber, email)
-        WHERE id=(${id})
+  //добавить новый контракт
+  app.post("/contractj", async (req, res) => {
+    const { id, employeeName, clientName, serviceName, price } = req.body;
+    if (id) {
+      const updateContract = await query`
+      UPDATE contract SET (employeeID, clientID, serviceID, price) = 
+      ((SELECT employee.id_employee FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id_service FROM service WHERE service.name=${serviceName}),${price})
+      WHERE id_contract=${id}`;
+    } else {
+      const newPerson = await query`
+      INSERT INTO contract (employeeID, clientID, serviceID, price)
+        VALUES 
+        ((SELECT employee.id_employee FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id_service FROM service WHERE service.name=${serviceName}),${price})
       RETURNING *`;
-    res.json(newPerson.rows);
+      res.json(newPerson.rows);
+    }
   });
 
-  app.post("/client", async (req, res) => {
-    const { name } = req.body;
-    const searchPerson = await query`
-      SELECT client (first_name, last_name, second_name, phoneNumber, email)
-        WHERE first_name=(${name})
-      RETURNING *`;
-    res.json(searchPerson.rows);
-  });
-
-  app.post("/client/delete/:id", async (req, res) => {
-    const { id } = req.params;
-    const zapros = await query`DELETE FROM client where id = ${id}`;
-    res.json(zapros.rows);
-  });
-
+  // удалить контракт по id
   app.post("/contractj/delete/:id", async (req, res) => {
     const { id } = req.params;
     const zapros = await query`DELETE FROM contract where id_contract = ${id}`;
     res.json(zapros.rows);
   });
 
-  /*
-  app.post("/user", async (req, res) => {
-    const { login, password } = req.body;
-    const newUser = await query`
-      INSERT INTO users (login, password)
-        VALUES (${login}, ${password})
-      RETURNING *`;
-    res.json(newUser.rows);
-  });*/
+  //достать всю таблицу заявок
+  app.get("/requests", async (req, res) => {
+    const z2 = await pool.query(`
+      SELECT id_request "id"
+      ,first_name "firstname"
+      ,last_name "lastname"
+      ,second_name "secondname"
+      ,phoneNumber "phoneNumber"
+      ,status "status"
+      ,comment "comment"
+        FROM request
+      `);
+    res.json(z2.rows);
+  });
 
-  app.post("/user", async (req, res) => {
-    const { login, password } = req.body as { login: string; password: string };
-
-    const usrpass = await query`
-    SELECT login, password FROM users WHERE login=${login} and password=${password};`;
-
-    if (usrpass.rows.length == 1) {
-      //res.json(usrpass.rows);
-      console.log("got ya");
-
-      //токеныыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы
-      //создаем приваткей
-      const privateKey = "private.key";
-      //создаем токен
-      const token = jwt.sign({ login: login, email: password }, privateKey, { expiresIn: "2h" });
-      res.json(token);
-    } else {
-      res.sendStatus(401);
-    }
+  //удалить заявку по id
+  app.post("/request/delete/:id", async (req, res) => {
+    const { id } = req.params;
+    const zapros = await query`DELETE FROM request where id_request = ${id}`;
+    res.json(zapros.rows);
   });
 }
 

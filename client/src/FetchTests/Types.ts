@@ -56,12 +56,6 @@ export interface ContractJoin {
   price: number;
 }
 
-export interface User {
-  id: string;
-  login: string;
-  password: string;
-}
-
 /** Свойства клиента для отрисовки */
 
 export type RequestProperties = Omit<Request, "id">;
@@ -71,8 +65,6 @@ export type ServiceProperties = Omit<Service, "id">;
 export type ContractProperties = Omit<Contract, "id" | "employeeId" | "clientId" | "serviceId">;
 
 export type ContractJoinProperties = Omit<ContractJoin, "id">; //contract join
-
-export type UserProperties = Omit<User, "id">;
 
 /** Свойства для полей ввода */
 interface FieldMetadata {
@@ -142,11 +134,6 @@ export const contractJoinFieldMetadata: Record<keyof ContractJoinProperties, Fie
   },
 };
 
-export const userFieldMetadata: Record<keyof UserProperties, FieldMetadata> = {
-  login: { label: "Login", type: "text" },
-  password: { label: "Password", type: "text" },
-};
-
 // тайпскрипт глупый, не догадывается, что список ключей это список ключей, поэтому тип надо затереть неправильный тип через as any
 /** Список полей клиента */
 export const requestPropertyList: (keyof RequestProperties)[] = Object.keys(requestFieldMetadata) as any;
@@ -158,5 +145,3 @@ export const contractPropertyList: (keyof ContractProperties)[] = Object.keys(co
 export const contractJoinPropertyList: (keyof ContractJoinProperties)[] = Object.keys(
   contractJoinFieldMetadata
 ) as any;
-
-export const userPropertyList: (keyof UserProperties)[] = Object.keys(userFieldMetadata) as any;
