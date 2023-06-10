@@ -90,16 +90,6 @@ async function main() {
     }
   });
 
-  //search with name
-  app.get("/clientS", async (req, res) => {
-    const { name } = req.body;
-    const searchPerson = await query`
-        SELECT first_name FROM client
-          WHERE first_name=(${name})`;
-    console.log(searchPerson);
-    res.json(searchPerson.rows);
-  });
-
   //удалить клиента по id
   app.post("/client/delete/:id", async (req, res) => {
     const { id } = req.params;
@@ -187,6 +177,7 @@ async function main() {
       ,last_name "lastname"
       ,second_name "secondname"
       ,phoneNumber "phoneNumber"
+      ,email "email"
       ,status "status"
       ,comment "comment"
         FROM request

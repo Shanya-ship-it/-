@@ -6,16 +6,17 @@ import "./App.css"; //импорт цсс для красоты
 import React, { useContext } from "react";
 import { Welcome } from "./FetchTests/Welcome";
 import { Header } from "./FetchTests/Header";
+
 import { ClientList } from "./FetchTests/ClientList"; //импорт файла с логикой выполнения запроса для таблицы с клиентами
 import { AddClient } from "./FetchTests/AddClient"; //
 import { EditClient } from "./FetchTests/EditClients";
-import { SearchClient } from "./FetchTests/SearchClient";
 
 import { ContractJoinList } from "./FetchTests/ContractJoin";
 import { AddContract } from "./FetchTests/AddContract";
 import { EditContractJ } from "./FetchTests/EditContract";
 
 import { RequestList } from "./FetchTests/Request";
+import { Search } from "./FetchTests/Search";
 
 //
 //link - привязка урл и пас и описание
@@ -30,11 +31,11 @@ const App = () => {
           <Route path="/clients" element={<ClientList />} />
           <Route path="/client/add" element={<AddClient />} />
           <Route path="/client/edit/:id?" element={<EditClient />} />
-          <Route path="/client/search/" element={<SearchClient />} />
           <Route path="/contractsj" element={<ContractJoinList />} />
           <Route path="/contractj/add" element={<AddContract />} />
           <Route path="/contractsj/edit/:id?" element={<EditContractJ />} />
           <Route path="/requests" element={<RequestList />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </BrowserRouter>
     </div>

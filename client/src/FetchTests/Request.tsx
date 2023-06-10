@@ -32,7 +32,7 @@ export const RequestList = () => {
   return (
     <div className="app-tab" style={{ display: "flex", flexDirection: "column" }}>
       <div>
-        <button onClick={getRequest}>Обновить список клиентов</button>
+        <button onClick={getRequest}>Обновить список заявок</button>
       </div>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
       <div style={{ flex: "1", overflow: "auto" }}>

@@ -7,6 +7,7 @@ export interface Request {
   lastname: string;
   secondname: string;
   phoneNumber: string;
+  email: string;
   status: string;
   comment: string;
 }
@@ -83,6 +84,7 @@ export const requestFieldMetadata: Record<keyof RequestProperties, FieldMetadata
   lastname: { label: "Фамилия", type: "text" },
   secondname: { label: "Отчество", type: "text" },
   phoneNumber: { label: "Номер телефона", type: "string" },
+  email: { label: "Электронная почта", type: "string" },
   status: { label: "Статус", type: "text" },
   comment: { label: "Комментарий", type: "text" },
 };

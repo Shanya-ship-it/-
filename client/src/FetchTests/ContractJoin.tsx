@@ -41,10 +41,10 @@ export const ContractJoinList = () => {
     <div className="app-tab" style={{ display: "flex", flexDirection: "column" }}>
       <div>
         <button onClick={getContractJoin}>Обновить список контрактов</button>
+        <Link to={`/contractj/add/`}>
+          <button>Создать контракт</button>
+        </Link>
       </div>
-      <Link to={`/contractj/add/`}>
-        <button>Создать контракт</button>
-      </Link>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
       <div style={{ flex: "1", overflow: "auto" }}>
         <table className="list">
@@ -55,6 +55,8 @@ export const ContractJoinList = () => {
                   {contractJoinFieldMetadata[field].label}
                 </td>
               ))}
+              <td className="list-item">Редактировать</td>
+              <td className="list-item">Удалить</td>
             </tr>
           </thead>
           <tbody className="list-body">

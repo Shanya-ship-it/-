@@ -5,6 +5,7 @@ const links: { text: string; to: string }[] = [
   { to: "/clients", text: "Клиенты" },
   { to: "/contractsj", text: "Контракты" },
   { to: "/requests", text: "Заявки" },
+  { to: "/search", text: "Поиск" },
 ];
 
 export const Header = () => {

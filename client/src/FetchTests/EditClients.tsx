@@ -76,7 +76,6 @@ export const EditClient = () => {
         })}
       </table>
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <button onClick={addClient}>Создать</button>
         {id && <button onClick={updateClient}>Редактировать</button>}
       </div>
     </div>
