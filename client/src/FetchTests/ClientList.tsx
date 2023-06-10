@@ -37,6 +37,15 @@ export const ClientList = () => {
     getClients();
   }, []);
 
+  const [search, setSearch] = useState("");
+
+  const searchWords = search.toLowerCase().split(" ");
+  const searchFields: (keyof Client)[] = ["firstname", "secondname", "lastname"];
+
+  const filteredClients = clients.filter((client) =>
+    searchWords.every((word) => searchFields.some((field) => client[field].toLowerCase().includes(word)))
+  );
+
   //здесь происходит красивое отображение моей таблицы
   return (
     <div className="app-tab" style={{ display: "flex", flexDirection: "column" }}>
@@ -45,9 +54,16 @@ export const ClientList = () => {
         <Link to="/client/add">
           <button>Добавить клиента</button>
         </Link>
-        <Link to={`/client/search/`}>
-          <button>Поиск клиента</button>
-        </Link>
+      </div>
+      <div className="form">
+        <form className="=search_form">
+          <input
+            type="text"
+            placeholder="search in the clients..."
+            className="search_input"
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </form>
       </div>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
       <div style={{ flex: "1", overflow: "auto" }}>
@@ -64,7 +80,7 @@ export const ClientList = () => {
             </tr>
           </thead>
           <tbody className="list-body">
-            {clients.map((client) => (
+            {filteredClients.map((client) => (
               <tr key={client.id} className="list-row">
                 {clientPropertyList.map((field) => (
                   <td className="list-item" key={field}>

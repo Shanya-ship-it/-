@@ -79,14 +79,16 @@ async function main() {
       (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email})
       WHERE id=${id}`;
     } else {
-      const newPerson = await query`
+      const {
+        rows: [newPerson],
+      } = await query`
       INSERT INTO client (first_name, last_name, second_name, phoneNumber, email)
         VALUES (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email})
       RETURNING *`;
       await query`INSERT INTO contract (employeeID, clientID, serviceID, singing_date, completion_date, price) 
-      VALUES ('22efd401-ea5a-45f8-892b-5e019556ec60', (SELECT id FROM client WHERE first_name=(${firstname})), '03cd9074-3f19-43dd-9756-50821f9d6da4', '2000-01-01', '2000-01-01', '00')`;
+      VALUES ('22efd401-ea5a-45f8-892b-5e019556ec60', ${newPerson.id}, '03cd9074-3f19-43dd-9756-50821f9d6da4', '2000-01-01', '2000-01-01', '00')`;
 
-      res.json(newPerson.rows);
+      res.json(newPerson);
     }
   });
 
