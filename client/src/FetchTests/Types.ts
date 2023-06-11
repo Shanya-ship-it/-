@@ -20,6 +20,7 @@ export interface Client {
   secondname: string;
   phoneNumber: string;
   email: string;
+  cityname: string;
 }
 
 export interface Employee {
@@ -95,6 +96,7 @@ export const clientFieldMetadata: Record<keyof ClientProperties, FieldMetadata> 
   secondname: { label: "Отчество", type: "text" },
   phoneNumber: { label: "Номер телефона", type: "string" },
   email: { label: "Email", type: "text" },
+  cityname: { label: "Город", type: "text" },
 };
 
 export const employeeFieldMetadata: Record<keyof EmployeeProperties, FieldMetadata> = {
@@ -136,7 +138,7 @@ export const contractJoinFieldMetadata: Record<keyof ContractJoinProperties, Fie
   },
 };
 
-// тайпскрипт глупый, не догадывается, что список ключей это список ключей, поэтому тип надо затереть неправильный тип через as any
+// тайпскрипт, не догадывается, что список ключей это список ключей, поэтому тип надо затереть неправильный тип через as any
 /** Список полей клиента */
 export const requestPropertyList: (keyof RequestProperties)[] = Object.keys(requestFieldMetadata) as any;
 export const clientPropertyList: (keyof ClientProperties)[] = Object.keys(clientFieldMetadata) as any;

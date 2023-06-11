@@ -31,6 +31,28 @@ export const ContractJoinList = () => {
     getContractJoin();
   };
 
+  //поиск
+  const [searchEmp, setSearchEmp] = useState("");
+  const [searchConCl, setSearchConCl] = useState("");
+
+  //поиск по имени сотрудника
+  const filteredContractsEmp = contractsJoin.filter((contractsj) => {
+    if (searchEmp == "") {
+      return contractsj.clientName.toLowerCase().includes(searchConCl.toLowerCase());
+    } else {
+      return contractsj.employeeName.toLowerCase().includes(searchEmp.toLowerCase());
+    }
+  });
+
+  //поиск клиента в контракте
+  const filteredContractsCl = contractsJoin.filter((contractsj) => {
+    return contractsj.clientName.toLowerCase().includes(searchConCl.toLowerCase());
+  });
+
+  useEffect(() => {
+    getContractJoin();
+  }, []);
+
   // Загружаем список клиентов на первое открытие страницы (для визуализации объекта)
   useEffect(() => {
     getContractJoin();
@@ -44,6 +66,22 @@ export const ContractJoinList = () => {
         <Link to={`/contractj/add/`}>
           <button>Создать контракт</button>
         </Link>
+      </div>
+      <div className="form">
+        <form className="=search_form">
+          <input
+            type="text"
+            placeholder="search employee..."
+            className="search_input"
+            onChange={(event) => setSearchEmp(event.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="search client..."
+            className="search_input"
+            onChange={(event) => setSearchConCl(event.target.value)}
+          />
+        </form>
       </div>
       {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
       <div style={{ flex: "1", overflow: "auto" }}>
@@ -60,7 +98,7 @@ export const ContractJoinList = () => {
             </tr>
           </thead>
           <tbody className="list-body">
-            {contractsJoin.map((contractJoin) => (
+            {filteredContractsEmp.map((contractJoin) => (
               <tr key={contractJoin.id} className="list-row">
                 {contractJoinPropertyList.map((field) => {
                   const { format } = contractJoinFieldMetadata[field];

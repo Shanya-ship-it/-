@@ -8,6 +8,7 @@ const initialClientValues: ClientProperties = {
   secondname: "",
   email: "",
   phoneNumber: "",
+  cityname: "",
 };
 
 export const AddClient = () => {

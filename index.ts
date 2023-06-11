@@ -49,6 +49,7 @@ async function main() {
         ,second_name "secondname"
         ,phoneNumber "phoneNumber"
         ,email "email"
+        ,city_name "cityname"
       FROM client
       WHERE id=${id}`;
     res.json(client); //в ответку передаем данные таблицы рядом, в формате жсон
@@ -63,6 +64,7 @@ async function main() {
       ,second_name "secondname"
       ,phoneNumber "phoneNumber"
       ,email "email"
+      ,city_name "cityname"
         FROM client
         ORDER BY last_name,first_name`
     );
@@ -71,22 +73,22 @@ async function main() {
 
   //запрос если есть id - редактируем клиента, если нет id - добавляем нового клиента
   app.post("/client", async (req, res) => {
-    const { id, firstname, lastname, secondname, phoneNumber, email } = req.body;
+    const { id, firstname, lastname, secondname, phoneNumber, email, cityname } = req.body;
 
     if (id) {
       const update = await query`
-      UPDATE client SET (first_name, last_name, second_name, phoneNumber, email) = 
-      (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email})
+      UPDATE client SET (first_name, last_name, second_name, phoneNumber, email, city_name) = 
+      (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email}, ${cityname})
       WHERE id=${id}`;
     } else {
       const {
         rows: [newPerson],
       } = await query`
-      INSERT INTO client (first_name, last_name, second_name, phoneNumber, email)
-        VALUES (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email})
+      INSERT INTO client (first_name, last_name, second_name, phoneNumber, email, city_name)
+        VALUES (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email}, ${cityname})
       RETURNING *`;
       await query`INSERT INTO contract (employeeID, clientID, serviceID, singing_date, completion_date, price) 
-      VALUES ('22efd401-ea5a-45f8-892b-5e019556ec60', ${newPerson.id}, '03cd9074-3f19-43dd-9756-50821f9d6da4', '2000-01-01', '2000-01-01', '00')`;
+      VALUES ('c3f8d033-84ed-4fca-8243-0089e43bf310', ${newPerson.id}, '93faf6e2-4cd3-41c4-9c93-22c0172cfac3', '2000-01-01', '2000-01-01', '00')`;
 
       res.json(newPerson);
     }

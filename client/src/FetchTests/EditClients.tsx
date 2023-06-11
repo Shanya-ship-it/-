@@ -11,6 +11,7 @@ const initialClientValues: Client = {
   secondname: "",
   email: "",
   phoneNumber: "",
+  cityname: "",
 };
 
 export const EditClient = () => {

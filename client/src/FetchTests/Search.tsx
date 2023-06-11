@@ -18,17 +18,6 @@ export const Search = () => {
     setClients(json); //?
   };
 
-  const [searchCl, setSearchCl] = useState("");
-
-  //поиск по имени клиента
-  const searchWords = searchCl.toLowerCase().split(" "); //то что хочу искать
-  const searchFields: (keyof Client)[] = ["firstname", "secondname", "lastname"]; //где хочу найти
-
-  //массив clients вызывает функцию filter, которая принимает в себя некого клиента, сравниваем есть ли в массиве то что мы написали в инпуте
-  const filteredClients = clients.filter((client) =>
-    searchWords.every((word) => searchFields.some((field) => client[field].toLowerCase().includes(word)))
-  );
-
   const [contractsJoin, setContractsJoin] = useState<ContractJoin[]>([]); //деструктуризация данных
 
   const getContractJoin = async () => {
@@ -46,11 +35,14 @@ export const Search = () => {
 
   const [searchEmp, setSearchEmp] = useState("");
   const [searchConCl, setSearchConCl] = useState("");
-  const [searchCon, setSearchCon] = useState("");
 
   //поиск по имени сотрудника
   const filteredContractsEmp = contractsJoin.filter((contractsj) => {
-    return contractsj.employeeName.toLowerCase().includes(searchEmp.toLowerCase());
+    if (searchEmp == "") {
+      return contractsj.clientName.toLowerCase().includes(searchConCl.toLowerCase());
+    } else {
+      return contractsj.employeeName.toLowerCase().includes(searchEmp.toLowerCase());
+    }
   });
 
   //поиск клиента в контракте
@@ -59,61 +51,29 @@ export const Search = () => {
   });
 
   useEffect(() => {
-    getClients();
     getContractJoin();
   }, []);
 
   return (
     <div>
+      <div className="app-tab" style={{ whiteSpace: "pre-wrap" }}>
+        {`Поиск`}
+      </div>
       <div className="form">
         <form className="=search_form">
           <input
             type="text"
-            placeholder="search in the clients..."
-            className="search_input"
-            onChange={(event) => setSearchCl(event.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="search in the contracts employee..."
+            placeholder="search employee..."
             className="search_input"
             onChange={(event) => setSearchEmp(event.target.value)}
           />
           <input
             type="text"
-            placeholder="search in the contracts client..."
+            placeholder="search client..."
             className="search_input"
             onChange={(event) => setSearchConCl(event.target.value)}
           />
         </form>
-      </div>
-      <div style={{ flex: "1", overflow: "auto" }}>
-        <table className="list">
-          <thead className="list-head">
-            <tr className="list-row">
-              {clientPropertyList.map((field) => (
-                <td className="list-item" key={field}>
-                  {clientFieldMetadata[field].label}
-                </td>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="list-body">
-            {filteredContractsEmp.map((contractJoin) => (
-              <tr key={contractJoin.id} className="list-row">
-                {contractJoinPropertyList.map((field) => {
-                  const { format } = contractJoinFieldMetadata[field];
-                  const value = contractJoin[field];
-                  return (
-                    <td className="list-item" key={field}>
-                      {format ? format(value) : value.toString()}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </div>
   );
