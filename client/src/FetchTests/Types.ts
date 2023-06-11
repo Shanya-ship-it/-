@@ -58,6 +58,16 @@ export interface ContractJoin {
   price: number;
 }
 
+export interface Tables {
+  id: string;
+  employeeName: string;
+  clientName: string;
+  serviceName: string;
+  description: string;
+  price: number;
+  cityname: string;
+}
+
 /** Свойства клиента для отрисовки */
 
 export type RequestProperties = Omit<Request, "id">;
@@ -67,6 +77,7 @@ export type ServiceProperties = Omit<Service, "id">;
 export type ContractProperties = Omit<Contract, "id" | "employeeId" | "clientId" | "serviceId">;
 
 export type ContractJoinProperties = Omit<ContractJoin, "id">; //contract join
+export type TablesProperties = Omit<Tables, "id">; //tables join
 
 /** Свойства для полей ввода */
 interface FieldMetadata {
@@ -138,6 +149,19 @@ export const contractJoinFieldMetadata: Record<keyof ContractJoinProperties, Fie
   },
 };
 
+export const tablesFieldMetadata: Record<keyof TablesProperties, FieldMetadata> = {
+  employeeName: { label: "Сотрудник", type: "text" },
+  clientName: { label: "Клиент", type: "text" },
+  serviceName: { label: "Услуга", type: "string" },
+  description: { label: "Описание", type: "text" },
+  price: {
+    label: "Сумма",
+    type: "number",
+    format: moneyFormat,
+  },
+  cityname: { label: "Город", type: "text" },
+};
+
 // тайпскрипт, не догадывается, что список ключей это список ключей, поэтому тип надо затереть неправильный тип через as any
 /** Список полей клиента */
 export const requestPropertyList: (keyof RequestProperties)[] = Object.keys(requestFieldMetadata) as any;
@@ -149,3 +173,5 @@ export const contractPropertyList: (keyof ContractProperties)[] = Object.keys(co
 export const contractJoinPropertyList: (keyof ContractJoinProperties)[] = Object.keys(
   contractJoinFieldMetadata
 ) as any;
+
+export const tablesPropertyList: (keyof TablesProperties)[] = Object.keys(tablesFieldMetadata) as any;

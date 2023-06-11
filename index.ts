@@ -107,16 +107,16 @@ async function main() {
     const {
       rows: [constactj],
     } = await query`
-      SELECT id_contract "id"
+      SELECT id "id"
       ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
       ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
       ,service.name "serviceName"
       ,price "price"
       FROM contract
-      JOIN employee ON employee.id_employee = contract.employeeID
+      JOIN employee ON employee.id = contract.employeeID
       JOIN client ON client.id = contract.clientID
-      JOIN service ON service.id_service = contract.serviceID
-      WHERE id_contract=${id};
+      JOIN service ON service.id = contract.serviceID
+      WHERE id=${id};
     `;
     res.json(constactj);
   });
@@ -124,7 +124,7 @@ async function main() {
   //достать всю таблицу контрактов
   app.get("/contractsj", async (req, res) => {
     const z1 = await pool.query(`
-      SELECT id_contract "id"
+      SELECT contract.id "id"
         ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
         ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
         ,service.name "serviceName"
@@ -132,9 +132,9 @@ async function main() {
         ,completion_date "dateEnd"
         ,price "price"
         FROM contract
-        JOIN employee ON employee.id_employee = contract.employeeID
+        JOIN employee ON employee.id = contract.employeeID
         JOIN client ON client.id = contract.clientID
-        JOIN service ON service.id_service = contract.serviceID;
+        JOIN service ON service.id = contract.serviceID;
     `);
     res.json(z1.rows);
   });
@@ -144,8 +144,8 @@ async function main() {
     const { id, employeeName, clientName, serviceName, price } = req.body;
     const update = await query`
       UPDATE contract SET (employeeID, clientID, serviceID, price) = 
-      ((SELECT employee.id_employee FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id_service FROM service WHERE service.name=${serviceName}),${price})
-      WHERE id_contract=${id}`;
+      ((SELECT employee.id FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id FROM service WHERE service.name=${serviceName}),${price})
+      WHERE contract.id =${id}`;
   });
 
   //добавить новый контракт
@@ -154,13 +154,13 @@ async function main() {
     if (id) {
       const updateContract = await query`
       UPDATE contract SET (employeeID, clientID, serviceID, price) = 
-      ((SELECT employee.id_employee FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id_service FROM service WHERE service.name=${serviceName}),${price})
+      ((SELECT employee.id FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id FROM service WHERE service.name=${serviceName}),${price})
       WHERE id_contract=${id}`;
     } else {
       const newPerson = await query`
       INSERT INTO contract (employeeID, clientID, serviceID, price)
         VALUES 
-        ((SELECT employee.id_employee FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id_service FROM service WHERE service.name=${serviceName}),${price})
+        ((SELECT employee.id FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id FROM service WHERE service.name=${serviceName}),${price})
       RETURNING *`;
       res.json(newPerson.rows);
     }
@@ -169,14 +169,14 @@ async function main() {
   // удалить контракт по id
   app.post("/contractj/delete/:id", async (req, res) => {
     const { id } = req.params;
-    const zapros = await query`DELETE FROM contract where id_contract = ${id}`;
+    const zapros = await query`DELETE FROM contract where id = ${id}`;
     res.json(zapros.rows);
   });
 
   //достать всю таблицу заявок
   app.get("/requests", async (req, res) => {
     const z2 = await pool.query(`
-      SELECT id_request "id"
+      SELECT id "id"
       ,first_name "firstname"
       ,last_name "lastname"
       ,second_name "secondname"
@@ -192,9 +192,25 @@ async function main() {
   //удалить заявку по id
   app.post("/request/delete/:id", async (req, res) => {
     const { id } = req.params;
-    const zapros = await query`DELETE FROM request where id_request = ${id}`;
+    const zapros = await query`DELETE FROM request where id = ${id}`;
     res.json(zapros.rows);
   });
-}
 
+  app.get("/search", async (req, res) => {
+    const z1 = await pool.query(`
+      SELECT contract.id "id"
+        ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
+        ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
+        ,service.name "serviceName"
+        ,description "description"
+        , price "price"
+        FROM contract
+        JOIN employee ON employee.id = contract.employeeID
+        JOIN client ON client.id = contract.clientID
+        JOIN service ON service.id = contract.serviceID
+        
+    `);
+    res.json(z1.rows);
+  });
+}
 main();

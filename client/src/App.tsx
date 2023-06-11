@@ -17,6 +17,7 @@ import { EditContractJ } from "./FetchTests/EditContract";
 
 import { RequestList } from "./FetchTests/Request";
 import { Search } from "./FetchTests/Search";
+import { SearchTest } from "./FetchTests/SearchTest";
 
 //
 //link - привязка урл и пас и описание
@@ -35,7 +36,7 @@ const App = () => {
           <Route path="/contractj/add" element={<AddContract />} />
           <Route path="/contractsj/edit/:id?" element={<EditContractJ />} />
           <Route path="/requests" element={<RequestList />} />
-          <Route path="/search" element={<Search />} />
+          <Route path="/search" element={<SearchTest />} />
         </Routes>
       </BrowserRouter>
     </div>
