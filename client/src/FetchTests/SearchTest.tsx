@@ -30,15 +30,11 @@ export const SearchTest = () => {
 
   const filteredContractsEmp = tables.filter((tables) => {
     if (searchEmp == "") {
-      return (
-        tables.clientName.toLowerCase().includes(searchConCl.toLowerCase()) &&
-        tables.cityname.toLowerCase().includes(searchCity.toLowerCase())
-      );
+      return tables.clientName.toLowerCase().includes(searchConCl.toLowerCase());
     } else {
       const a = tables.employeeName.toLowerCase().includes(searchEmp.toLowerCase());
       const b = tables.clientName.toLowerCase().includes(searchConCl.toLowerCase());
-      const c = tables.cityname.toLowerCase().includes(searchCity.toLowerCase());
-      return a && b && c;
+      return a && b;
     }
   });
 

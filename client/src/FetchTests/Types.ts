@@ -65,7 +65,6 @@ export interface Tables {
   serviceName: string;
   description: string;
   price: number;
-  cityname: string;
 }
 
 /** Свойства клиента для отрисовки */
@@ -159,7 +158,6 @@ export const tablesFieldMetadata: Record<keyof TablesProperties, FieldMetadata> 
     type: "number",
     format: moneyFormat,
   },
-  cityname: { label: "Город", type: "text" },
 };
 
 // тайпскрипт, не догадывается, что список ключей это список ключей, поэтому тип надо затереть неправильный тип через as any

@@ -88,7 +88,7 @@ async function main() {
         VALUES (${firstname}, ${lastname}, ${secondname}, ${phoneNumber}, ${email}, ${cityname})
       RETURNING *`;
       await query`INSERT INTO contract (employeeID, clientID, serviceID, singing_date, completion_date, price) 
-      VALUES ('c3f8d033-84ed-4fca-8243-0089e43bf310', ${newPerson.id}, '93faf6e2-4cd3-41c4-9c93-22c0172cfac3', '2000-01-01', '2000-01-01', '00')`;
+      VALUES ('26226a4d-ec4d-4d2f-ad6a-36f7318d1b59', ${newPerson.id}, '97be0a01-0a46-4516-bd34-59a9d383e110', '2000-01-01', '2000-01-01', '00')`;
 
       res.json(newPerson);
     }
@@ -208,7 +208,6 @@ async function main() {
         JOIN employee ON employee.id = contract.employeeID
         JOIN client ON client.id = contract.clientID
         JOIN service ON service.id = contract.serviceID
-        
     `);
     res.json(z1.rows);
   });
