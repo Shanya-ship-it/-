@@ -1,8 +1,14 @@
 //файл описания списка клиента, логика извлечения данных, запрос на сервер и вывод результата
 
-import { useEffect, useState } from "react"; //хуки
+import { useEffect, useMemo, useState } from "react"; //хуки
 import { Client, clientFieldMetadata, clientPropertyList } from "./Types";
 import { Link } from "react-router-dom";
+import { Table, TableColumn } from "../components/Table";
+
+const clientColumns = clientPropertyList.map<TableColumn<Client>>((field) => {
+  const meta = clientFieldMetadata[field];
+  return { field, title: meta.label, render: meta.format };
+});
 
 /** Компонент для отрисовки списка клиентов */
 export const ClientList = () => {
@@ -24,27 +30,50 @@ export const ClientList = () => {
     setClients(json); //?
   };
 
-  const deleteClient = async (id: string) => {
-    const res = await fetch(`http://localhost:8080/client/delete/${id}`, {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-    });
-    getClients();
-  };
-
   // Загружаем список клиентов на первое открытие страницы (для визуализации объекта)
   useEffect(() => {
     getClients();
   }, []);
 
+  const columns = useMemo(() => {
+    const deleteClient = async (id: string) => {
+      await fetch(`http://localhost:8080/client/delete/${id}`, {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+      });
+      getClients();
+    };
+
+    return clientColumns.concat([
+      {
+        key: "edit",
+        field: "id",
+        title: "Редактировать",
+        render: (id) => (
+          <Link to={`/client/edit/${id}`}>
+            <button>Редактировать</button>
+          </Link>
+        ),
+      },
+      {
+        key: "delete",
+        field: "id",
+        title: "Удалить",
+        render: (id) => <button onClick={() => deleteClient(id)}>Удалить</button>,
+      },
+    ]);
+  }, []);
+
   const [search, setSearch] = useState("");
 
-  const searchWords = search.toLowerCase().split(" ");
-  const searchFields: (keyof Client)[] = ["firstname", "secondname", "lastname"];
+  const filteredClients = useMemo(() => {
+    const searchWords = search.toLowerCase().split(" ");
+    const searchFields: (keyof Client)[] = ["firstname", "secondname", "lastname"];
 
-  const filteredClients = clients.filter((client) =>
-    searchWords.every((word) => searchFields.some((field) => client[field].toLowerCase().includes(word)))
-  );
+    return clients.filter((client) =>
+      searchWords.every((word) => searchFields.some((field) => client[field].toLowerCase().includes(word)))
+    );
+  }, [clients, search]);
 
   //здесь происходит красивое отображение моей таблицы
   return (
@@ -56,49 +85,17 @@ export const ClientList = () => {
         </Link>
       </div>
       <div className="form">
-        <form className="=search_form">
+        <form className="search_form">
           <input
             type="text"
-            placeholder="search in the clients..."
+            placeholder="Поиск..."
             className="search_input"
             onChange={(event) => setSearch(event.target.value)}
           />
         </form>
       </div>
-      {/* Превращаем данные в DOM элементы, по div'у на Client'а*/}
       <div style={{ flex: "1", overflow: "auto" }}>
-        <table className="list">
-          <thead className="list-head">
-            <tr className="list-row">
-              {clientPropertyList.map((field) => (
-                <td className="list-item" key={field}>
-                  {clientFieldMetadata[field].label}
-                </td>
-              ))}
-              <td className="list-item">Редактировать</td>
-              <td className="list-item">Удалить</td>
-            </tr>
-          </thead>
-          <tbody className="list-body">
-            {filteredClients.map((client) => (
-              <tr key={client.id} className="list-row">
-                {clientPropertyList.map((field) => (
-                  <td className="list-item" key={field}>
-                    {client[field]}
-                  </td>
-                ))}
-                <td className="list-item">
-                  <Link to={`/client/edit/${client.id}`}>
-                    <button>Редактировать</button>
-                  </Link>
-                </td>
-                <td className="list-item">
-                  <button onClick={() => deleteClient(client.id)}>Удалить</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table<Client> keyField="id" columns={columns} data={filteredClients} />
       </div>
     </div>
   );

@@ -106,14 +106,14 @@ async function main() {
       rows: [constactj],
     } = await query`
       SELECT id_contract "id"
-      ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
-      ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
-      ,service.name "serviceName"
-      ,price "price"
+        ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
+        ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
+        ,service.name "serviceName"
+        ,price "price"
       FROM contract
-      JOIN employee ON employee.id_employee = contract.employeeID
-      JOIN client ON client.id = contract.clientID
-      JOIN service ON service.id_service = contract.serviceID
+        JOIN employee ON employee.id_employee = contract.employeeID
+        JOIN client ON client.id = contract.clientID
+        JOIN service ON service.id_service = contract.serviceID
       WHERE id_contract=${id};
     `;
     res.json(constactj);
@@ -129,7 +129,7 @@ async function main() {
         ,singing_date "dateBegin"
         ,completion_date "dateEnd"
         ,price "price"
-        FROM contract
+      FROM contract
         JOIN employee ON employee.id_employee = contract.employeeID
         JOIN client ON client.id = contract.clientID
         JOIN service ON service.id_service = contract.serviceID;
@@ -173,7 +173,7 @@ async function main() {
 
   //достать всю таблицу заявок
   app.get("/requests", async (req, res) => {
-    const z2 = await pool.query(`
+    const z2 = await query`
       SELECT id_request "id"
       ,first_name "firstname"
       ,last_name "lastname"
@@ -183,7 +183,7 @@ async function main() {
       ,status "status"
       ,comment "comment"
         FROM request
-      `);
+      `;
     res.json(z2.rows);
   });
 
