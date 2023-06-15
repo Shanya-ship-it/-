@@ -39,7 +39,7 @@ export interface Service {
   cost: number;
 }
 
-//теперь делаю тоже самое только для контрактов
+//теперь делаю тоже самое только для договоров
 export interface Contract {
   id: string;
   employeeId: string;

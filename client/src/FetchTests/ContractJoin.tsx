@@ -46,7 +46,7 @@ export const ContractJoinList = () => {
     }
   });
 
-  //поиск клиента в контракте
+  //поиск клиента в договоре
   const filteredContractsCl = contractsJoin.filter((contractsj) => {
     return contractsj.clientName.toLowerCase().includes(searchConCl.toLowerCase());
   });
@@ -64,9 +64,9 @@ export const ContractJoinList = () => {
   return (
     <div className="app-tab" style={{ display: "flex", flexDirection: "column" }}>
       <div>
-        <button onClick={getContractJoin}>Обновить список контрактов</button>
+        <button onClick={getContractJoin}>Обновить список договоров</button>
         <Link to={`/contractj/add/`}>
-          <button>Создать контракт</button>
+          <button>Создать договор</button>
         </Link>
       </div>
       <div className="form">

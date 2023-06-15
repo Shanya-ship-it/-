@@ -3,9 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 const links: { text: string; to: string }[] = [
   { to: "/main", text: "Главная" },
   { to: "/clients", text: "Клиенты" },
-  { to: "/contractsj", text: "Контракты" },
+  { to: "/contractsj", text: "Договоры" },
   { to: "/requests", text: "Заявки" },
   { to: "/search", text: "Поиск" },
+  { to: "/print", text: "Шаблон" },
 ];
 
 export const Header = () => {

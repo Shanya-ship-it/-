@@ -101,7 +101,7 @@ async function main() {
     res.json(zapros.rows);
   });
 
-  //Достать один контракт по id
+  //Достать один договор по id
   app.get("/contractj/:id", async (req, res) => {
     const id = req.params.id;
     const {
@@ -121,9 +121,10 @@ async function main() {
     res.json(constactj);
   });
 
-  //достать всю таблицу контрактов
-  app.get("/contractsj", async (req, res) => {
-    const z1 = await pool.query(`
+  //достать всю таблицу договоров
+  try {
+    app.get("/contractsj", async (req, res) => {
+      const z1 = await pool.query(`
       SELECT contract.id "id"
         ,(employee.first_name || ' ' || employee.last_name || ' ' || employee.second_name) "employeeName"
         ,(client.first_name || ' ' || client.last_name || ' ' || client.second_name) "clientName"
@@ -136,10 +137,13 @@ async function main() {
         JOIN client ON client.id = contract.clientID
         JOIN service ON service.id = contract.serviceID;
     `);
-    res.json(z1.rows);
-  });
+      res.json(z1.rows);
+    });
+  } catch (e) {
+    console.log(e);
+  }
 
-  //запрос редактирования контракта только по имени
+  //запрос редактирования договора только по имени
   app.post("/constactj", async (req, res) => {
     const { id, employeeName, clientName, serviceName, price } = req.body;
     const update = await query`
@@ -148,14 +152,14 @@ async function main() {
       WHERE contract.id =${id}`;
   });
 
-  //добавить новый контракт
+  //добавить новый договор
   app.post("/contractj", async (req, res) => {
     const { id, employeeName, clientName, serviceName, price } = req.body;
     if (id) {
       const updateContract = await query`
       UPDATE contract SET (employeeID, clientID, serviceID, price) = 
       ((SELECT employee.id FROM employee WHERE employee.first_name=${employeeName}),(SELECT client.id FROM client WHERE client.first_name=${clientName}),(SELECT service.id FROM service WHERE service.name=${serviceName}),${price})
-      WHERE id_contract=${id}`;
+      WHERE contract.id =${id}`;
     } else {
       const newPerson = await query`
       INSERT INTO contract (employeeID, clientID, serviceID, price)
@@ -166,10 +170,10 @@ async function main() {
     }
   });
 
-  // удалить контракт по id
+  // удалить договор по id
   app.post("/contractj/delete/:id", async (req, res) => {
     const { id } = req.params;
-    const zapros = await query`DELETE FROM contract where id = ${id}`;
+    const zapros = await query`DELETE FROM contract WHERE id = ${id}`;
     res.json(zapros.rows);
   });
 
